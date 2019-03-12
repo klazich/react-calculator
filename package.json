@@ -7,10 +7,12 @@
   "scripts": {
     "build": "gatsby build",
     "develop": "gatsby develop",
-    "format": "prettier --write src/**/*.{js,jsx}",
+    "format": "prettier --write \"src/**/*.{js,jsx,json,css,md}\"",
+    "format-root": "prettier --write \"./*.{js,jsx,json,css,md}\"",
     "start": "npm run develop",
     "serve": "gatsby serve",
-    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\""
+    "test": "jest",
+    "test-watch": "jest --watch"
   },
   "dependencies": {
     "gatsby": "^2.1.30",
@@ -18,7 +20,12 @@
     "react-dom": "^16.8.4"
   },
   "devDependencies": {
-    "prettier": "^1.16.4"
+    "babel-jest": "^24.5.0",
+    "babel-preset-gatsby": "^0.1.9",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^24.5.0",
+    "prettier": "^1.16.4",
+    "react-test-renderer": "^16.8.4"
   },
   "repository": {
     "type": "git",
