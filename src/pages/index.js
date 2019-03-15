@@ -1,7 +1,7 @@
 import React from 'react'
 import { Box, Flex } from 'rebass'
 
-import Key from '../components/Key'
+import Calculator from '../components/Calculator'
 
 const Container = props => (
   <Box
@@ -17,18 +17,7 @@ export default () => (
   <div>
     <Container bg="lightblue">
       <Box mx="auto" width={256}>
-        <Flex
-          flexWrap="wrap"
-          flexDirection
-          bg="gainsboro"
-          p={1}
-          justifyContent="center"
-        >
-          <Key size={1} label={0} />
-          <Key size={1} label={1} />
-          <Key size={1} label={2} />
-          <Key size={3} label={3} />
-        </Flex>
+        <Calculator />
       </Box>
     </Container>
   </div>
