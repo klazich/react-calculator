@@ -19,7 +19,7 @@ const appendValue = value => digit =>
     ? value
     : `${value}${digit}`
 
-const initialState = { value: '', stack: [], result: 0 }
+const initialState = { value: '0', stack: [], result: 0 }
 
 function reducer(state, action) {
   const { value, stack, result } = state
@@ -28,37 +28,17 @@ function reducer(state, action) {
 
   console.log(value, stack)
 
+  if (/[0-9.]/.test(type)) return { ...state, value: append(type) }
+
   switch (type) {
-    case '0':
-      return { ...state, value: append('0') }
-    case '1':
-      return { ...state, value: append('1') }
-    case '2':
-      return { ...state, value: append('2') }
-    case '3':
-      return { ...state, value: append('3') }
-    case '4':
-      return { ...state, value: append('4') }
-    case '5':
-      return { ...state, value: append('5') }
-    case '6':
-      return { ...state, value: append('6') }
-    case '7':
-      return { ...state, value: append('7') }
-    case '8':
-      return { ...state, value: append('8') }
-    case '9':
-      return { ...state, value: append('9') }
-    case '.':
-      return { ...state, value: append('.') }
     case '÷':
-      return { ...state, value: '', stack: [...stack, pf(value), divide] }
+      return { ...state, value: '0', stack: [...stack, pf(value), divide] }
     case '×':
-      return { ...state, value: '', stack: [...stack, pf(value), multiply] }
+      return { ...state, value: '0', stack: [...stack, pf(value), multiply] }
     case '-':
-      return { ...state, value: '', stack: [...stack, pf(value), subtract] }
+      return { ...state, value: '0', stack: [...stack, pf(value), subtract] }
     case '+':
-      return { ...state, value: '', stack: [...stack, pf(value), add] }
+      return { ...state, value: '0', stack: [...stack, pf(value), add] }
     case '⇦':
       return { ...state, value: `${value}`.slice(0, -1) || '' }
     case 'C':
@@ -86,7 +66,7 @@ function Calculator() {
       <Screen fontSize={6} css={{ height: 'auto' }}>
         {format(state.result)}
       </Screen>
-      <Screen>{state.value}</Screen>
+      <Screen>{format(math.eval(state.value))}</Screen>
       <KeyPad onKey={v => handleOnKey(v)} />
     </main>
   )
