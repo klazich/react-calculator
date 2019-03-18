@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Flex } from 'rebass'
+import { Box } from 'rebass'
 
 import Calculator from '../components/Calculator'
 
