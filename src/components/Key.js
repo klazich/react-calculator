@@ -13,7 +13,7 @@ const Key = props => (
       onClick={() => props.onKey(props.value)}
       data-value={props.value}
     >
-      {props.children}
+      {props.value}
     </Button>
   </Box>
 )
