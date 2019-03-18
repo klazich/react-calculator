@@ -18,6 +18,7 @@
     "babel-plugin-styled-components": "^1.10.0",
     "gatsby": "^2.1.30",
     "gatsby-plugin-styled-components": "^3.0.7",
+    "mathjs": "^5.7.0",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
     "rebass": "^3.0.1",
