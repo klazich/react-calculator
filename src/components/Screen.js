@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Heading } from 'rebass'
+import { Heading } from 'rebass'
 
 const Screen = props => (
   <Heading
@@ -12,6 +12,7 @@ const Screen = props => (
     css={{
       height: '64px',
     }}
+    {...props}
   >
     {props.children}
   </Heading>
