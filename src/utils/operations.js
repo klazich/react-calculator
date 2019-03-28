@@ -1,42 +1,52 @@
-import { initGenerator, value as v } from '.'
+import { initGenerator } from '.'
 
-const state = (op, value) => ({ op, value })
-
-export const makeOpFunction = op => v => {
+export const makeOpFunction = op => {
   switch (op) {
     case '÷':
-      return x => v / x
+      return x => y => x / y
     case '×':
-      return x => v * x
+      return x => y => x * y
     case '-':
-      return x => v - x
+      return x => y => x - y
     case '+':
-      return x => v + x
+      return x => y => x + y
     default:
       throw new Error(`unknown operator "${op}"`)
   }
 }
 
 export function* OperationsInput() {
-  let opStack = []
+  let { value: result, op } = yield
+  let fn = makeOpFunction(op)(result)
 
   while (true) {
-    const { op, value } = yield x => opStack.reduce((a, f) => f(a), x)
+    const { value, op } = yield fn
 
-    const fn = makeOpFunction(op)(value)
-    opStack = [fn, ...opStack]
+    if (!op) {
+      return fn(value)
+    }
 
-    console.log(opStack.map(f => f(1)))
+    result = fn(value)
+    fn = makeOpFunction(op)(result)
   }
 }
 
-const Operations = () => initGenerator(OperationsInput)()
+export const Operations = () => initGenerator(OperationsInput)()
 
-export default Operations
+export const makeOperator = generator => (value, op) =>
+  generator.next({ value, op }).value
 
-const op1 = Operations()
+export const Operator = () => makeOperator(Operations())
 
-let eq = op1.next(state('-', 33)).value
-// console.log(eq(1))
-eq = op1.next(state('+', 30)).value
-console.log(eq(2))
+export default Operator
+
+// testing
+
+const operate = Operator()
+
+operate(11, '-')
+operate(2, '+')
+operate(6, '÷')
+const result = operate(2)
+
+console.log(result)
