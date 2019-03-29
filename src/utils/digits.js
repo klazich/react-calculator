@@ -1,6 +1,4 @@
-import { initGenerator, value } from '.'
-
-export function* DigitInput() {
+function* DigitsInput() {
   let digits = ''
   let hasDecimal = false
 
@@ -15,15 +13,4 @@ export function* DigitInput() {
   }
 }
 
-const Digits = () => initGenerator(DigitInput)()
-
-export default Digits
-
-const d1 = Digits()
-const d2 = Digits()
-
-console.log('d1', value(d1.next('1')))
-console.log('d2', value(d2.next('9')))
-console.log('d2', value(d2.next('.')))
-console.log('d1', value(d1.next('3')))
-console.log('d2', value(d2.next('3')))
+export default DigitsInput
