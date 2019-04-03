@@ -10,7 +10,7 @@ const Key = props => (
       width={1}
       borderRadius={0}
       fontSize={4}
-      onClick={() => props.onKey(props.value)}
+      onClick={props.handleOnClick}
       data-value={props.value}
     >
       {props.value}

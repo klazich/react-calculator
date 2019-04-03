@@ -1,16 +1,20 @@
-function* DigitsInput() {
-  let digits = ''
-  let hasDecimal = false
+function* InputDigits(init = '') {
+  let digits = `${init}`
+  let hasDecimal = digits.includes('.')
 
   while (true) {
     const d = yield digits
 
-    if ((d === '.' && hasDecimal) || (d === '0' && digits === '') || !d)
+    if ((d === '.' && hasDecimal) || (d === '0' && digits === '') || !d) {
       continue
-    if (d === '.') hasDecimal = true
+    }
+
+    if (d === '.') {
+      hasDecimal = true
+    }
 
     digits += d
   }
 }
 
-export default DigitsInput
+export default InputDigits

@@ -1,73 +1,135 @@
-import React, { useReducer } from 'react'
-import * as math from 'mathjs'
+import React, { useReducer, useEffect } from 'react'
+import { format as mathFormat } from 'mathjs'
 
 import KeyPad from './KeyPad'
 import Screen from './Screen'
 
-const { divide, multiply, subtract, add } = math
+import { getOperatorFunction, Digits, Operations, getDigits } from '../utils'
+import {
+  substituteKey,
+  canExecute,
+  addDigit,
+  subDigit,
+  addOperation,
+  clearDigits,
+  solveOperations,
+} from './functions'
 
-const pf = parseFloat
+const format = value => mathFormat(+value, { precision: 14 })
 
-const format = value => math.format(value, 14)
+const keys = [
+  'C',
+  '⇦',
+  '%',
+  '÷',
+  '7',
+  '8',
+  '9',
+  '×',
+  '4',
+  '5',
+  '6',
+  '-',
+  '1',
+  '2',
+  '3',
+  '+',
+  '0',
+  '.',
+  '=',
+]
 
-// https://blog.usejournal.com/everything-react-first-app-188b33a880ca
+const isKey = k => keys.includes(k)
+const isDigit = k => /[0-9.]/.test(k)
+const isOperator = k => /[÷×+-]/.test(k)
+const isBackspace = k => k === '⇦'
+const isClear = k => k === 'C'
+const isExecute = k => k === '='
 
-const appendValue = value => digit =>
-  digit === '.' && /\./.test(`${value}`)
-    ? value
-    : digit === '0' && value === ''
-    ? value
-    : `${value}${digit}`
+const createAction = key => {
+  if (isDigit(key)) {
+    return { type: 'DIGIT', value: key }
+  } else if (isOperator(key)) {
+    return { type: 'OPERATOR', value: getOperatorFunction(key) }
+  } else if (isBackspace(key)) {
+    return { type: 'BACKSPACE' }
+  } else if (isClear(key)) {
+    return { type: 'CLEAR' }
+  } else if (isExecute(key)) {
+    return { type: 'EXECUTE' }
+  }
+}
 
-const initialState = { value: '0', stack: [], result: 0 }
+const initialState = () => ({
+  last: null,
+  result: 0,
+  digits: Digits(),
+  operations: Operations(),
+})
 
 function reducer(state, action) {
-  const { value, stack, result } = state
-  const { type } = action
-  const append = appendValue(value)
+  const { last } = state
+  const { type, value } = action
 
-  console.log(value, stack)
+  if (last === 'EXECUTE' && type === 'DIGIT') {
+    const newState = initialState()
+    return reducer(newState, action)
+  }
 
-  if (/[0-9.]/.test(type)) return { ...state, value: append(type) }
+  const makeState = last => props => ({ ...props, last })
 
   switch (type) {
-    case '÷':
-      return { ...state, value: '0', stack: [...stack, pf(value), divide] }
-    case '×':
-      return { ...state, value: '0', stack: [...stack, pf(value), multiply] }
-    case '-':
-      return { ...state, value: '0', stack: [...stack, pf(value), subtract] }
-    case '+':
-      return { ...state, value: '0', stack: [...stack, pf(value), add] }
-    case '⇦':
-      return { ...state, value: `${value}`.slice(0, -1) || '' }
-    case 'C':
-      return initialState
-    case '=':
-      if (stack.length < 2) return state
-      let s = [...stack, pf(value)]
-      while (s.length > 2) {
-        const [x, op, y, ...rest] = s
-        s = [op(x, y), ...rest]
-      }
-      return { value: `${s[0]}`, stack: [], result: s[0] }
+    case 'DIGIT':
+      return makeState(type)(addDigit(state)(value))
+    case 'OPERATOR':
+      return makeState(type)(addOperation(state)(value))
+    case 'BACKSPACE':
+      return makeState(type)(subDigit(state)())
+    case 'CLEAR':
+      return makeState(type)(clearDigits(state)())
+    case 'EXECUTE':
+      return canExecute(state)
+        ? makeState(type)(solveOperations(state)())
+        : makeState(type)(state)
     default:
       throw new Error(`Type: "${type}" is unknown`)
   }
 }
 
 function Calculator() {
-  const [state, dispatch] = useReducer(reducer, initialState)
+  const [state, dispatch] = useReducer(reducer, initialState())
 
-  const handleOnKey = type => dispatch({ type })
+  console.log(state)
+
+  const handleOnKeyDown = event => {
+    event.preventDefault()
+    const value = substituteKey(event.key)
+    if (isKey(value)) {
+      dispatch(createAction(value))
+    }
+  }
+
+  const handleOnClick = event => {
+    const value = event.target.dataset.value
+    dispatch(createAction(value))
+  }
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleOnKeyDown, false)
+    return () => {
+      document.removeEventListener('keydown', handleOnKeyDown, false)
+    }
+  })
+
+  const displayValue = getDigits(state)
 
   return (
     <main>
-      <Screen fontSize={6} css={{ height: 'auto' }}>
+      <Screen fontSize={4} css={{ height: 'auto' }}>
         {format(state.result)}
       </Screen>
-      <Screen>{format(math.eval(state.value))}</Screen>
-      <KeyPad onKey={v => handleOnKey(v)} />
+      <Screen>{displayValue}</Screen>
+      <KeyPad handleOnClick={handleOnClick} />
     </main>
   )
 }

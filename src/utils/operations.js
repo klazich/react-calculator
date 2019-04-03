@@ -1,31 +1,20 @@
-const makeOpFunction = op => {
-  switch (op) {
-    case '÷':
-      return a => b => a / b
-    case '×':
-      return a => b => a * b
-    case '-':
-      return a => b => a - b
-    case '+':
-      return a => b => a + b
-    default:
-      throw new Error(`unknown operator "${op}"`)
-  }
-}
+function* InputOperations() {
+  let input = yield
+  while (!input) input = yield
 
-function* OperationsInput() {
-  let { x: result, op } = yield
-  let fn = makeOpFunction(op)(result)
+  let { operand: result, fn } = input
+  let equation = fn(result)
 
   while (true) {
-    const { x, op } = yield fn
+    input = yield equation
 
-    // if (!op && !x) continue
-    // if (!op) return fn(x)
+    if (!input) continue
 
-    result = fn(x)
-    fn = makeOpFunction(op)(result)
+    const { operand, fn } = input
+
+    result = equation(operand)
+    equation = fn(result)
   }
 }
 
-export default OperationsInput
+export default InputOperations
