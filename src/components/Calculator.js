@@ -1,117 +1,75 @@
 import React, { useReducer, useEffect } from 'react'
-import { format as mathFormat } from 'mathjs'
 
 import KeyPad from './KeyPad'
 import Screen from './Screen'
 
-import { getOperatorFunction, Digits, Operations, getDigits } from '../utils'
 import {
-  substituteKey,
-  canExecute,
+  calculator,
+  reducer,
+  initialState,
+  wrapReducer,
+} from '../reducers/reducer'
+import {
   addDigit,
-  subDigit,
+  addDecimal,
+  addZero,
+  backspace,
+  clear,
   addOperation,
-  clearDigits,
-  solveOperations,
-} from './functions'
-
-const format = value => mathFormat(+value, { precision: 14 })
-
-const keys = [
-  'C',
-  '⇦',
-  '%',
-  '÷',
-  '7',
-  '8',
-  '9',
-  '×',
-  '4',
-  '5',
-  '6',
-  '-',
-  '1',
-  '2',
-  '3',
-  '+',
-  '0',
-  '.',
-  '=',
-]
+  execute,
+  continueAcc,
+  addOperand,
+} from '../actions'
+import { getOperatorFunction, keys, substituteKey } from '../functions'
 
 const isKey = k => keys.includes(k)
-const isDigit = k => /[0-9.]/.test(k)
+const isDigit = k => /[0-9]/.test(k)
 const isOperator = k => /[÷×+-]/.test(k)
+const isZero = k => k === '0'
+const isDecimal = k => k === '.'
 const isBackspace = k => k === '⇦'
 const isClear = k => k === 'C'
 const isExecute = k => k === '='
 
-const createAction = key => {
-  if (isDigit(key)) {
-    return { type: 'DIGIT', value: key }
-  } else if (isOperator(key)) {
-    return { type: 'OPERATOR', value: getOperatorFunction(key) }
-  } else if (isBackspace(key)) {
-    return { type: 'BACKSPACE' }
-  } else if (isClear(key)) {
-    return { type: 'CLEAR' }
-  } else if (isExecute(key)) {
-    return { type: 'EXECUTE' }
-  }
-}
-
-const initialState = () => ({
-  last: null,
-  result: 0,
-  digits: Digits(),
-  operations: Operations(),
-})
-
-function reducer(state, action) {
-  const { last } = state
-  const { type, value } = action
-
-  if (last === 'EXECUTE' && type === 'DIGIT') {
-    const newState = initialState()
-    return reducer(newState, action)
-  }
-
-  const makeState = last => props => ({ ...props, last })
-
-  switch (type) {
-    case 'DIGIT':
-      return makeState(type)(addDigit(state)(value))
-    case 'OPERATOR':
-      return makeState(type)(addOperation(state)(value))
-    case 'BACKSPACE':
-      return makeState(type)(subDigit(state)())
-    case 'CLEAR':
-      return makeState(type)(clearDigits(state)())
-    case 'EXECUTE':
-      return canExecute(state)
-        ? makeState(type)(solveOperations(state)())
-        : makeState(type)(state)
-    default:
-      throw new Error(`Type: "${type}" is unknown`)
-  }
-}
-
 function Calculator() {
-  const [state, dispatch] = useReducer(reducer, initialState())
+  const [state, dispatch] = useReducer(wrapReducer(calculator), initialState)
 
-  console.log(state)
+  function dispatcher(key) {
+    if (isDigit(key)) {
+      if (state.last === 'EXECUTE') dispatch(clear())
+      dispatch(addDigit(key))
+    } else if (isZero(key)) {
+      if (state.last === 'EXECUTE') dispatch(clear())
+      dispatch(addZero())
+    } else if (isDecimal(key)) {
+      if (state.last === 'EXECUTE') dispatch(clear())
+      dispatch(addDecimal())
+    } else if (isOperator(key)) {
+      if (state.last === 'EXECUTE') dispatch(continueAcc())
+      dispatch(addOperand())
+      const fn = getOperatorFunction(key)
+      dispatch(addOperation(fn, key))
+    } else if (isBackspace(key)) {
+      dispatch(backspace())
+    } else if (isClear(key)) {
+      dispatch(clear())
+    } else if (isExecute(key)) {
+      dispatch(addOperand())
+      dispatch(execute())
+    }
+  }
 
   const handleOnKeyDown = event => {
     event.preventDefault()
     const value = substituteKey(event.key)
     if (isKey(value)) {
-      dispatch(createAction(value))
+      dispatcher(value)
     }
   }
 
   const handleOnClick = event => {
     const value = event.target.dataset.value
-    dispatch(createAction(value))
+    dispatcher(value)
   }
 
   useEffect(() => {
@@ -121,14 +79,14 @@ function Calculator() {
     }
   })
 
-  const displayValue = getDigits(state)
+  const equation = state.history.length > 0 ? state.history.join(' ') : '0'
 
   return (
     <main>
-      <Screen fontSize={4} css={{ height: 'auto' }}>
-        {format(state.result)}
+      <Screen fontSize={2} css={{ height: 'auto' }}>
+        {equation}
       </Screen>
-      <Screen>{displayValue}</Screen>
+      <Screen>{state.display}</Screen>
       <KeyPad handleOnClick={handleOnClick} />
     </main>
   )
