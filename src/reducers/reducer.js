@@ -1,4 +1,8 @@
 import {
+  ADD_DIGIT,
+  ADD_DECIMAL,
+  ADD_ZERO,
+  BACKSPACE,
   CLEAR,
   ADD_OPERAND,
   ADD_OPERATION,
@@ -6,7 +10,7 @@ import {
   CONTINUE_ACC,
 } from '../actions'
 
-import { digits } from './digits'
+// import { digits } from './digits'
 import { history, last } from '.'
 
 const computeAcc = ({ digits, acc, fn }) => fn(acc)(parseFloat(digits))
@@ -20,10 +24,40 @@ export const initialState = {
   last: null,
 }
 
+const append = a => b => `${a}${b}`
+
 export function reducer(state, action) {
   const { type } = action
 
   switch (type) {
+    case ADD_DIGIT:
+      const { digits } = state
+      return {
+        ...state,
+        digits: digits.includes('.') ? digits : append(digits)('.'),
+      }
+
+    case ADD_ZERO:
+      const { digits } = state
+      return {
+        ...state,
+        digits: digits === '0' ? digits : append(digits)('0'),
+      }
+
+    case ADD_DIGIT:
+      const { digits } = state
+      return {
+        ...state,
+        digits: digits === '0' ? action.digit : append(digits)(action.digit),
+      }
+
+    case BACKSPACE:
+      const { digits } = state
+      return {
+        ...state,
+        digits: digits.length === 1 ? '0' : digits.slice(0, -1),
+      }
+
     case CLEAR:
       return initialState
 
@@ -31,11 +65,13 @@ export function reducer(state, action) {
       return !state.fn
         ? {
             ...state,
+            digits: '0',
             acc: parseFloat(state.digits),
             display: state.digits,
           }
         : {
             ...state,
+            digits: '0',
             acc: computeAcc(state),
             display: `${computeAcc(state)}`,
           }
@@ -51,12 +87,14 @@ export function reducer(state, action) {
         ? state
         : {
             ...state,
+            digits: '0',
             display: `${state.acc}`,
           }
 
     case CONTINUE_ACC:
       return {
         ...state,
+        digits: state.acc,
         fn: null,
       }
 
