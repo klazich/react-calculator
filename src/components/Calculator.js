@@ -1,61 +1,117 @@
-import React, { useReducer, useEffect } from 'react'
+import React, { useEffect, useReducer } from 'react'
+import {
+  addFn,
+  addOperand,
+  appendDecimal,
+  appendDigit,
+  appendOperandToEq,
+  appendOperatorToEq,
+  appendZero,
+  backspace,
+  clear,
+  resetAcc,
+  resetDigits,
+  resetEquation,
+  resetFn,
+  setDisplay,
+  setLast,
+  show,
+  updateAcc,
+} from '../actions'
 
+import { getOperatorFunction, keys, substituteKey } from '../functions'
+import { calculator, initialState, wrapReducer } from '../reducers/index'
 import KeyPad from './KeyPad'
 import Screen from './Screen'
 
-import {
-  calculator,
-  reducer,
-  initialState,
-  wrapReducer,
-} from '../reducers/reducer'
-import {
-  addDigit,
-  addDecimal,
-  addZero,
-  backspace,
-  clear,
-  addOperation,
-  execute,
-  continueAcc,
-  addOperand,
-} from '../actions'
-import { getOperatorFunction, keys, substituteKey } from '../functions'
-
 const isKey = k => keys.includes(k)
 const isDigit = k => /[0-9]/.test(k)
-const isOperator = k => /[÷×+-]/.test(k)
-const isZero = k => k === '0'
 const isDecimal = k => k === '.'
+const isZero = k => k === '0'
 const isBackspace = k => k === '⇦'
 const isClear = k => k === 'C'
+const isOperator = k => /[÷×+-]/.test(k)
 const isExecute = k => k === '='
 
 function Calculator() {
   const [state, dispatch] = useReducer(wrapReducer(calculator), initialState)
 
   function dispatcher(key) {
+    const didExecute = state.last.key === '='
+
     if (isDigit(key)) {
-      if (state.last === 'EXECUTE') dispatch(clear())
-      dispatch(addDigit(key))
-    } else if (isZero(key)) {
-      if (state.last === 'EXECUTE') dispatch(clear())
-      dispatch(addZero())
-    } else if (isDecimal(key)) {
-      if (state.last === 'EXECUTE') dispatch(clear())
-      dispatch(addDecimal())
-    } else if (isOperator(key)) {
-      if (state.last === 'EXECUTE') dispatch(continueAcc())
-      dispatch(addOperand())
+      return [
+        ...(didExecute ? [clear()] : []),
+        appendDigit(key),
+        setLast(key),
+        setDisplay(show.DIGITS),
+      ]
+    }
+
+    if (isDecimal(key)) {
+      return [
+        ...(didExecute ? [clear()] : []),
+        appendDecimal(),
+        setLast(key),
+        setDisplay(show.DIGITS),
+      ]
+    }
+
+    if (isZero(key)) {
+      return [
+        ...(didExecute ? [clear()] : []),
+        appendZero(),
+        setLast(key),
+        setDisplay(show.DIGITS),
+      ]
+    }
+
+    if (isBackspace(key)) {
+      return [
+        ...(didExecute ? [clear()] : []),
+        backspace(),
+        setLast(key),
+        setDisplay(show.DIGITS),
+      ]
+    }
+
+    if (isClear(key)) {
+      return [clear()]
+    }
+
+    if (isOperator(key)) {
+      const operand = didExecute ? state.ops.acc : parseFloat(state.digits)
       const fn = getOperatorFunction(key)
-      dispatch(addOperation(fn, key))
-    } else if (isBackspace(key)) {
-      dispatch(backspace())
-    } else if (isClear(key)) {
-      dispatch(clear())
-    } else if (isExecute(key)) {
-      dispatch(addOperand())
-      dispatch(execute())
+      const display = didExecute ? show.ACC : show.DIGITS
+
+      return [
+        ...(didExecute ? [resetAcc(), resetEquation()] : []),
+        resetDigits(),
+        addOperand(operand),
+        appendOperandToEq(operand),
+        addFn(fn),
+        appendOperatorToEq(key),
+        updateAcc(),
+        setLast(key),
+        setDisplay(display),
+      ]
+    }
+
+    if (isExecute(key)) {
+      return [
+        ...(didExecute
+          ? [
+              resetEquation(),
+              appendOperandToEq(state.ops.acc),
+              appendOperatorToEq(state.equation[1]),
+            ]
+          : []),
+        addOperand(parseFloat(state.digits)),
+        appendOperandToEq(parseFloat(state.digits)),
+        updateAcc(),
+        setLast(key),
+        setDisplay(show.ACC),
+      ]
     }
   }
 
@@ -63,13 +119,15 @@ function Calculator() {
     event.preventDefault()
     const value = substituteKey(event.key)
     if (isKey(value)) {
-      dispatcher(value)
+      console.log(dispatcher(value))
+      dispatcher(value).forEach(action => dispatch(action))
     }
   }
 
   const handleOnClick = event => {
     const value = event.target.dataset.value
-    dispatcher(value)
+    console.log(dispatcher(value))
+    dispatcher(value).forEach(action => dispatch(action))
   }
 
   useEffect(() => {
@@ -79,14 +137,15 @@ function Calculator() {
     }
   })
 
-  const equation = state.history.length > 0 ? state.history.join(' ') : '0'
+  // const equation = state.history.length > 0 ? state.history.join(' ') : '0'
+  const display = state.display === show.DIGITS ? state.digits : state.ops.acc
 
   return (
     <main>
-      <Screen fontSize={2} css={{ height: 'auto' }}>
-        {equation}
+      <Screen fontSize={2} css={{ height: '3em' }}>
+        {state.equation.join(' ')}
       </Screen>
-      <Screen>{state.display}</Screen>
+      <Screen>{display}</Screen>
       <KeyPad handleOnClick={handleOnClick} />
     </main>
   )

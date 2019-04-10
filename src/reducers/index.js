@@ -1,67 +1,58 @@
-import {
-  ADD_DIGIT,
-  ADD_DECIMAL,
-  ADD_ZERO,
-  BACKSPACE,
-  CLEAR,
-  ADD_OPERAND,
-  ADD_OPERATION,
-  EXECUTE,
-  CONTINUE_ACC,
-} from '../actions'
+import { CLEAR, SET_DISPLAY, SET_LAST, show } from '../actions'
 
-const append = a => b => `${a}${b}`
+import { digits } from './digits'
+import { ops } from './ops'
+import { equation } from './equation'
 
-export function digits({ digits, acc }, action) {
-  const { type } = action
-
-  switch (type) {
-    case ADD_DECIMAL:
-      return digits.includes('.') ? digits : append(digits)('.')
-    case ADD_ZERO:
-      return digits === '0' ? digits : append(digits)('0')
-    case ADD_DIGIT:
-      return digits === '0' ? action.digit : append(digits)(action.digit)
-    case BACKSPACE:
-      return digits.length === 1 ? '0' : digits.slice(0, -1)
-    case ADD_OPERAND:
-    case EXECUTE:
-      return '0'
-    case CONTINUE_ACC:
-      return `${acc}`
-    default:
-      return digits
-  }
+export const initialState = {
+  digits: '0',
+  ops: {
+    operand: null,
+    acc: null,
+    fn: null,
+  },
+  equation: [],
+  display: show.DIGITS,
+  last: {
+    key: null,
+    type: null,
+  },
 }
 
-export function history({ history, digits }, action) {
-  const { type } = action
-
-  switch (type) {
-    case ADD_OPERAND:
-      return [...history, digits]
-    case ADD_OPERATION:
-      return [...history, action.character]
+function display(state, action) {
+  switch (action.type) {
+    case SET_DISPLAY:
+      return state === action.show ? state : action.show
     case CLEAR:
-    case CONTINUE_ACC:
-      return []
+      return show.DIGITS
     default:
-      return history
+      return state
   }
 }
 
-export function last(_state, action) {
-  return action.type
+function last(state, action) {
+  switch (action.type) {
+    case SET_LAST:
+      return { key: action.key, type: action.type }
+    case CLEAR:
+      return { key: null, type: null }
+    default:
+      return state
+  }
 }
 
-export function acc({ digits, fn, acc }, action) {
-  const { type } = action
-
-  switch (type) {
-    case ADD_OPERAND:
-      return !fn ? parseFloat(digits) : fn(acc)(parseFloat(digits))
-    case CONTINUE_ACC:
-    default:
-      return acc
+export function calculator(state, action) {
+  return {
+    digits: digits(state.digits, action),
+    ops: ops(state.ops, action),
+    equation: equation(state.equation, action),
+    display: display(state.display, action),
+    last: last(state.last, action),
   }
+}
+
+export const wrapReducer = reducer => (state, action) => {
+  const newState = reducer(state, action)
+  console.log(newState)
+  return newState
 }

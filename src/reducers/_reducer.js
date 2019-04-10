@@ -8,104 +8,87 @@ import {
   BACKSPACE,
   CLEAR,
   EXECUTE,
-  RESET_DIGITS,
-  UPDATE_ACC,
-  ADD_OPERAND,
-  ADD_FN,
 } from '../actions'
-
-import { digits } from './digits'
-import { ops } from './ops'
-import { equation } from './equation'
 
 export const initialState = {
   digits: '0',
-  ops: {
-    operand: null,
-    acc: null,
-    fn: null,
-  },
+  fn: null,
+  acc: 0,
+  display: '0',
   history: [],
   last: null,
-  display: 'SHOW_DIGITS',
 }
+
+const computeAcc = ({ digits, acc, fn }) => fn(acc)(parseFloat(digits))
+const appendToHistory = ({ history }) => (...args) => [...history, ...args]
+
+const append = a => b => `${a}${b}`
 
 export function init(initArgs) {
   return { ...initArgs }
 }
 
-const appendDigitToDigits = ({ digits }, digit) =>
-  digits === '0' ? `${digit}` : `${digits}${digit}`
-const appendDecimalToDigits = ({ digits }) =>
-  digits.includes('.') ? digits : `${digits}.`
-const appendZeroToDigits = ({ digits }) =>
-  digits === '0' ? `${digits}` : `${digits}0`
-const removeLastDigitFromDigits = ({ digits }) =>
-  digits.length <= 1 ? '0' : digits.slice(0, -1)
-const computeNewAcc = ({ digits, acc, fn }) => fn(acc)(parseFloat(digits))
-
 export function reducer(state, action) {
+  const { last } = state
   const { type } = action
 
-  state = { ...state, last: action.type }
-
   switch (type) {
-    case APPEND_DIGIT:
-      return {
-        ...state,
-        digits: appendDigitToDigits(state, action.digit),
-        // display: newDigits,
-      }
+    case APPEND_DECIMAL: {
+      const { digits } = last === 'EXECUTE' ? initialState : state
 
-    case APPEND_DECIMAL:
-      return {
-        ...state,
-        digits: appendDecimalToDigits(state),
-        // display: newDigits,
-      }
+      const newDigits = digits.includes('.') ? digits : append(digits)('.')
 
-    case APPEND_ZERO:
       return {
-        ...state,
-        digits: appendZeroToDigits(state),
-        // display: newDigits,
+        ...(last === 'EXECUTE' ? initialState : state),
+        last: type,
+        digits: newDigits,
+        display: newDigits,
       }
+    }
 
-    case BACKSPACE:
+    case APPEND_ZERO: {
+      const { digits } = last === 'EXECUTE' ? initialState : state
+
+      const newDigits = digits === '0' ? digits : append(digits)('0')
+
       return {
-        ...state,
-        digits: removeLastDigitFromDigits(state),
-        // display: newDigits,
+        ...(last === 'EXECUTE' ? initialState : state),
+        last: type,
+        digits: newDigits,
+        display: newDigits,
       }
+    }
+
+    case APPEND_DIGIT: {
+      const { digits } = last === 'EXECUTE' ? initialState : state
+      const { digit } = action
+
+      const newDigits = digits === '0' ? digit : append(digits)(digit)
+
+      return {
+        ...(last === 'EXECUTE' ? initialState : state),
+        last: type,
+        digits: newDigits,
+        display: newDigits,
+      }
+    }
+
+    case BACKSPACE: {
+      const digits = last === 'EXECUTE' ? `${state.acc}` : state.digits
+
+      const newDigits = digits.length === 1 ? '0' : digits.slice(0, -1)
+
+      return {
+        ...(last === 'EXECUTE' ? initialState : state),
+        last: type,
+        digits: newDigits,
+        display: newDigits,
+      }
+    }
 
     case CLEAR: {
       return initialState
     }
-
-    case RESET_DIGITS:
-      return {
-        ...state,
-        digits: initialState.digits,
-      }
-
-    case ADD_OPERAND:
-      return {
-        ...state,
-        operand: parseFloat(state.digits),
-      }
-
-    case UPDATE_ACC:
-      return {
-        ...state,
-        operand: null,
-        acc: state.fn(state.acc)(state.operand),
-      }
-
-    case ADD_FN:
-      return {
-        ...state,
-        fn: action.fn,
-      }
 
     case ADD_FIRST_OPERATION: {
       const { digits, history } = state
