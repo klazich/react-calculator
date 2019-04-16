@@ -1,50 +1,62 @@
+import { CLEAR, DIGIT, EXECUTE, OPERATOR, initialState } from './constants'
 import {
-  APPEND_DIGIT,
-  APPEND_DIGIT_POST_EXEC,
-  BACKSPACE,
-  CLEAR,
-  UPDATE_ACC,
-  UPDATE_ACC_POST_EXEC,
-  initialState,
-} from './constants'
+  resetAcc,
+  resetDigits,
+  resetNextFn,
+  updateAcc,
+  updateDigits,
+  updateNextFn,
+  didJustExecute,
+} from './functions'
 
-import { digitInput, backspace, clear, operatorInput } from './actions'
-import { appendToDigits, appendToEquation, updateAcc } from './functions'
+const stateReducer = state => funcs => funcs.reduce((a, f) => f(a), state)
 
-function reducer(state, action) {
+export function mainReducer(state, action) {
   switch (action.type) {
-    case APPEND_DIGIT:
-      return {
-        ...state,
-        digits: appendToDigits(state)(action.digit),
-        display: 'digits',
-      }
-    case APPEND_DIGIT_POST_EXEC:
-      return {
-        ...state,
-        acc: null,
-        digits: appendToDigits(state)(action.digit),
-        display: 'digits',
-      }
-    case BACKSPACE:
-      return {
-        ...state,
-        digits: state.digits.length > 1 ? state.digits.slice(0, -1) : '0',
-        display: 'digits',
-      }
+    case DIGIT:
+      return stateReducer(state)([updateDigits(action.digit)])
+    case OPERATOR:
+      return stateReducer(state)([
+        updateAcc(+state.digits),
+        updateNextFn(action.operator),
+        resetDigits(),
+      ])
+    case EXECUTE:
+      return stateReducer(state)([updateAcc(+state.digits), didJustExecute()])
     case CLEAR:
       return initialState
-    case UPDATE_ACC:
-      return {
-        ...state,
-        digits: '0',
-        acc: updateAcc(state)(action.operator, +digits),
-        display: 'digits',
-      }
-    case UPDATE_ACC_POST_EXEC:
-      return {
-        ...state,
-        digits: '0',
-      }
+    default:
+      return state
   }
+}
+
+export function postExecReducer(state, action) {
+  switch (action.type) {
+    case DIGIT:
+      return stateReducer(state)([
+        resetAcc(),
+        resetDigits(),
+        resetNextFn(),
+        updateDigits(action.digit),
+      ])
+    case OPERATOR:
+      return stateReducer(state)([resetDigits(), updateNextFn(action.operator)])
+    case EXECUTE:
+      return stateReducer(state)([didJustExecute()])
+    case CLEAR:
+      return initialState
+    default:
+      return state
+  }
+}
+
+export default function reducer(state, action) {
+  const midState = {
+    ...state,
+    didExecute: false,
+  }
+
+  return state.didExecute
+    ? postExecReducer(midState, action)
+    : mainReducer(midState, action)
 }

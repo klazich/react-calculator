@@ -1,44 +1,31 @@
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  useReducer,
-} from 'react'
+import React, { createContext, useEffect, useReducer } from 'react'
 
 import KeyPad from './KeyPad'
 import Screen from './Screen'
 
-const isKey = k => keys.includes(k)
-const isDigit = k => /[0-9]/.test(k)
-const isDecimal = k => k === '.'
-const isZero = k => k === '0'
-const isBackspace = k => k === '⇦'
-const isClear = k => k === 'C'
-const isOperator = k => /[÷×+-]/.test(k)
-const isExecute = k => k === '='
-
-const isDigitsUpdate = k =>
-  [isDigit, isDecimal, isZero, isBackspace].every(f(k))
+import { is, substituteKey } from '../state/functions'
+import { action } from '../state/actions'
+import reducer from '../state/reducers'
+import { initialState } from '../state/constants'
 
 export const CalculatorDispatch = createContext(null)
 
+const wrap = reducer => (state, action) => {
+  const newState = reducer(state, action)
+  console.log(newState)
+  return newState
+}
+
 function Calculator() {
-  const [state, dispatch] = useReducer(wrapReducer(calculator), initialState)
-  const [didExecute, setDidExecute] = useState(false)
+  const [state, dispatch] = useReducer(wrap(reducer), initialState)
 
   const handleOnKeyDown = event => {
     event.preventDefault()
-    const value = substituteKey(event.key)
-    if (isKey(value)) {
-      dispatcher(value).forEach(action => dispatch(action))
-    }
-  }
 
-  const handleOnClick = event => {
-    const value = event.target.dataset.value
-    console.log(dispatcher(value))
-    dispatcher(value).forEach(action => dispatch(action))
+    const key = substituteKey(event.key)
+    if (is.key(key)) {
+      dispatch(action(key))
+    }
   }
 
   useEffect(() => {
@@ -48,16 +35,14 @@ function Calculator() {
     }
   })
 
-  const display = state.display === show.DIGITS ? state.digits : state.ops.acc
-
   return (
     <main>
       <CalculatorDispatch.Provider value={dispatch}>
         <Screen fontSize={2} css={{ height: '3em' }}>
-          {state.equation.join(' ')}
+          {state.acc}
         </Screen>
-        <Screen>{display}</Screen>
-        <KeyPad handleOnClick={handleOnClick} />
+        <Screen>{state.digits}</Screen>
+        <KeyPad />
       </CalculatorDispatch.Provider>
     </main>
   )

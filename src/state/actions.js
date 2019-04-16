@@ -1,26 +1,28 @@
-import {
-  APPEND_DIGIT,
-  APPEND_DIGIT_POST_EXEC,
-  BACKSPACE,
-  CLEAR,
-  UPDATE_ACC,
-  UPDATE_ACC_POST_EXEC,
-} from './constants'
-
-export const digitInput = ({ didExecute }) => digit => ({
-  type: didExecute ? APPEND_DIGIT_POST_EXEC : APPEND_DIGIT,
-  digit,
-})
-
-export const backspace = () => ({
-  type: BACKSPACE,
-})
+import { CLEAR, DIGIT, EXECUTE, OPERATOR } from './constants'
+import { is } from './functions'
 
 export const clear = () => ({
   type: CLEAR,
 })
 
-export const operatorInput = ({ didExecute }) => operator => ({
-  type: didExecute ? UPDATE_ACC_POST_EXEC : UPDATE_ACC,
+export const digit = digit => ({
+  type: DIGIT,
+  digit,
+})
+
+export const execute = () => ({
+  type: EXECUTE,
+})
+
+export const operator = operator => ({
+  type: OPERATOR,
   operator,
 })
+
+export const action = key => {
+  if (is.clear(key)) return clear()
+  if (is.execute(key)) return execute()
+  if (is.digit(key)) return digit(key)
+  if (is.operator(key)) return operator(key)
+  return { type: null }
+}

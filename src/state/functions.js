@@ -2,27 +2,25 @@ import { divide, multiply, subtract, add, format as mathFormat } from 'mathjs'
 
 export const format = value => mathFormat(+value, { precision: 14 })
 
+// prettier-ignore
 export const keys = [
-  'C',
-  '⇦',
-  '%',
-  '÷',
-  '7',
-  '8',
-  '9',
-  '×',
-  '4',
-  '5',
-  '6',
-  '-',
-  '1',
-  '2',
-  '3',
-  '+',
-  '0',
-  '.',
-  '=',
+  'C', '⇦', '%', '÷',
+  '7', '8', '9', '×',
+  '4', '5', '6', '-',
+  '1', '2', '3', '+',
+  '0', '.', '=',
 ]
+
+export const is = {
+  key: k => keys.includes(k),
+  digit: k => /[0-9⇦.]/.test(k),
+  zero: k => k === '0',
+  backspace: k => k === '⇦',
+  decimal: k => k === '.',
+  clear: k => k === 'C',
+  operator: k => /[÷×+-]/.test(k),
+  execute: k => k === '=',
+}
 
 export const substituteKey = key => {
   const alt = ['/', '*', 'Escape', 'Backspace', 'Enter']
@@ -30,27 +28,47 @@ export const substituteKey = key => {
   return alt.includes(key) ? sub[alt.indexOf(key)] : key
 }
 
+// DidExecute functions
+
+export const didJustExecute = () => state => ({
+  ...state,
+  didExecute: true,
+})
+
 // Digits functions
 
 const canAppendDecimal = digits => !digits.includes('.')
 const canAppendZero = digits => digits !== '0'
-const appendCharToDigits = digits => char =>
-  digits === '0' ? char : `${digits}${char}`
 
-export const appendToDigits = ({ digits }) => char => {
+const backspaceDigits = digits =>
+  digits.length > 1 ? digits.slice(0, -1) : '0'
+
+const appendToDigits = digits => char => {
   if (
-    (char === '.' && !canAppendDecimal(digits)) ||
-    (char === '0' && canAppendZero(digits))
-  ) {
+    (is.decimal(char) && !canAppendDecimal(digits)) ||
+    (is.zero(char) && !canAppendZero(digits))
+  )
     return digits
-  }
-  return appendCharToDigits(digits)(char)
+
+  return is.zero(digits) ? char : `${digits}${char}`
 }
+
+export const updateDigits = digit => state => ({
+  ...state,
+  digits: is.backspace(digit)
+    ? backspaceDigits(state.digits)
+    : appendToDigits(state.digits)(digit),
+})
+
+export const resetDigits = (init = '0') => state => ({
+  ...state,
+  digits: init,
+})
 
 // Operand, operator and accumulator functions
 
-const getOpFunction = op => {
-  switch (op) {
+const operatorFunction = operator => {
+  switch (operator) {
     case '÷':
       return x => y => divide(x, y)
     case '×':
@@ -60,29 +78,48 @@ const getOpFunction = op => {
     case '+':
       return x => y => add(x, y)
     default:
-      throw new Error(`unknown operator "${op}"`)
+      throw new Error(`unknown operator "${operator}"`)
   }
 }
 
-const canOperate = acc => acc !== null
+const doIfState = test => func => state => (test(state) ? func(state) : state)
 
-export const updateAcc = ({ acc }) => (operator, operand) =>
-  canOperate(acc) ? getOpFunction(operator)(acc)(operand) : acc
+export const updateAcc = operand => state => ({
+  ...state,
+  acc: state.nextFn(operand),
+})
+
+export const resetAcc = (init = null) => state => ({
+  ...state,
+  acc: init,
+})
+
+export const updateNextFn = operator => state => ({
+  ...state,
+  nextFn: operatorFunction(operator)(state.acc),
+})
+
+export const resetNextFn = (init = x => x) => state => ({
+  ...state,
+  nextFn: init,
+})
 
 // Equation history functions
 
-const isOperator = v => /[÷×+-]/.test(v)
-const canAppendOperand = equation =>
-  equation.length === 0 ||
-  ['÷', '×', '+', '-'].includes(equation[equation.length - 1])
-const canAppendOperator = equation =>
-  equation.length > 0 && !isNaN(equation[equation.length - 1])
-const appendIf = test => equation => str =>
-  test(equation) ? [...equation, str] : equation
-const appendOperand = equation => operand =>
-  appendIf(canAppendOperand)(equation)(operand)
-const appendOperator = equation => operator =>
-  appendIf(canAppendOperator)(equation)(operator)
+// const canAppendOperand = equation =>
+//   equation.length === 0 || is.operator(equation[equation.length - 1])
+// const canAppendOperator = equation =>
+//   equation.length > 0 && !isNaN(equation[equation.length - 1])
 
-export const appendToEquation = ({ equation }) => str =>
-  isOperator(str) ? appendOperator(equation)(str) : appendOperand(equation)(str)
+// const appendIf = test => equation => str =>
+//   test(equation) ? [...equation, str] : equation
+
+// const appendOperand = equation => operand =>
+//   appendIf(canAppendOperand)(equation)(operand)
+// const appendOperator = equation => operator =>
+//   appendIf(canAppendOperator)(equation)(operator)
+
+// export const updateEquation = ({ equation }) => str =>
+//   is.operator(str)
+//     ? appendOperator(equation)(str)
+//     : appendOperand(equation)(str)
