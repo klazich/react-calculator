@@ -1,5 +1,4 @@
 import { divide, multiply, subtract, add, format as mathFormat } from 'mathjs'
-import { equation } from './reducers/equation'
 
 export const format = value => mathFormat(+value, { precision: 14 })
 
@@ -50,7 +49,7 @@ export const appendToDigits = ({ digits }) => char => {
 
 // Operand, operator and accumulator functions
 
-export const getOpFunction = op => {
+const getOpFunction = op => {
   switch (op) {
     case '÷':
       return x => y => divide(x, y)
