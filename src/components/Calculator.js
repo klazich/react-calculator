@@ -10,38 +10,40 @@ import { initialState } from '../state/constants'
 
 export const CalculatorDispatch = createContext(null)
 
-const wrap = reducer => (state, action) => {
+const logReducer = reducer => (state, action) => {
   const newState = reducer(state, action)
   console.log(newState)
   return newState
 }
 
 function Calculator() {
-  const [state, dispatch] = useReducer(wrap(reducer), initialState)
-
-  const handleOnKeyDown = event => {
-    event.preventDefault()
-
-    const key = substituteKey(event.key)
-    if (is.key(key)) {
-      dispatch(action(key))
-    }
-  }
+  const [state, dispatch] = useReducer(logReducer(reducer), initialState)
 
   useEffect(() => {
-    document.addEventListener('keydown', handleOnKeyDown, false)
+    const onKeyDown = event => {
+      event.preventDefault()
+
+      const key = substituteKey(event.key)
+      if (is.key(key)) {
+        dispatch(action(key))
+      }
+    }
+
+    document.addEventListener('keydown', onKeyDown, false)
     return () => {
-      document.removeEventListener('keydown', handleOnKeyDown, false)
+      document.removeEventListener('keydown', onKeyDown, false)
     }
   })
 
+  const display = ['OPERATOR', 'EXECUTE'].includes(state.last)
+    ? state.acc
+    : state.digits
+
   return (
     <main>
+      <Screen fontSize={2}>{state.equation.join(' ') || '_'}</Screen>
+      <Screen>{display}</Screen>
       <CalculatorDispatch.Provider value={dispatch}>
-        <Screen fontSize={2} css={{ height: '3em' }}>
-          {state.acc}
-        </Screen>
-        <Screen>{state.digits}</Screen>
         <KeyPad />
       </CalculatorDispatch.Provider>
     </main>

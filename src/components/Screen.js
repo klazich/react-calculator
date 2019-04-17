@@ -6,12 +6,9 @@ const Screen = props => (
     py={3}
     px={2}
     my={2}
-    bg="AliceBlue"
+    bg="white"
     fontFamily="monospace"
     textAlign="right"
-    css={{
-      height: '64px',
-    }}
     {...props}
   >
     {props.children}

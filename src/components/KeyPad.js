@@ -8,7 +8,7 @@ function KeyPad() {
   return (
     <Flex flexWrap="wrap" bg="gainsboro" p={1} justifyContent="start">
       {keys.map((item, id) => (
-        <Key size={item === '=' ? 2 : 1} value={item} key={id} />
+        <Key size={['=', '⇦'].includes(item) ? 2 : 1} value={item} key={id} />
       ))}
     </Flex>
   )

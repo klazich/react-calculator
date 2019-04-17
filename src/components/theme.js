@@ -34,5 +34,8 @@ export default {
       backgroundColor: 'transparent',
       boxShadow: 'inset 0 0 0 2px',
     },
+    '&:hover': {
+      opacity: 0.8,
+    },
   },
 }
