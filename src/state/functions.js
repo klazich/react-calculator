@@ -4,7 +4,7 @@ export const format = value => mathFormat(+value, { precision: 14 })
 
 // prettier-ignore
 export const keys = [
-  'C', '⇦', '%', '÷',
+  'C', '⇦', '÷',
   '7', '8', '9', '×',
   '4', '5', '6', '-',
   '1', '2', '3', '+',
@@ -50,6 +50,10 @@ const appendToDigits = digits => char => {
   )
     return digits
 
+  if (is.decimal(char) && is.zero(digits)) {
+    return '0.'
+  }
+
   return is.zero(digits) ? char : `${digits}${char}`
 }
 
@@ -82,7 +86,7 @@ const operatorFunction = operator => {
   }
 }
 
-const doIfState = test => func => state => (test(state) ? func(state) : state)
+// const doIfState = test => func => state => (test(state) ? func(state) : state)
 
 export const updateAcc = operand => state => ({
   ...state,
@@ -106,20 +110,30 @@ export const resetNextFn = (init = x => x) => state => ({
 
 // Equation history functions
 
-// const canAppendOperand = equation =>
-//   equation.length === 0 || is.operator(equation[equation.length - 1])
-// const canAppendOperator = equation =>
-//   equation.length > 0 && !isNaN(equation[equation.length - 1])
+const canAppendOperand = equation =>
+  equation.length === 0 ||
+  is.operator(equation[equation.length - 1]) ||
+  is.execute(equation[equation.length - 1])
+const canAppendOperator = equation =>
+  equation.length > 0 && !isNaN(equation[equation.length - 1])
 
-// const appendIf = test => equation => str =>
-//   test(equation) ? [...equation, str] : equation
+const appendIf = test => equation => str =>
+  test(equation) ? [...equation, str] : equation
 
-// const appendOperand = equation => operand =>
-//   appendIf(canAppendOperand)(equation)(operand)
-// const appendOperator = equation => operator =>
-//   appendIf(canAppendOperator)(equation)(operator)
+const appendOperand = equation => operand =>
+  appendIf(canAppendOperand)(equation)(operand)
+const appendOperator = equation => operator =>
+  appendIf(canAppendOperator)(equation)(operator)
 
-// export const updateEquation = ({ equation }) => str =>
-//   is.operator(str)
-//     ? appendOperator(equation)(str)
-//     : appendOperand(equation)(str)
+export const updateEquation = str => state => ({
+  ...state,
+  equation:
+    is.operator(str) || is.execute(str)
+      ? appendOperator(state.equation)(str)
+      : appendOperand(state.equation)(str),
+})
+
+export const resetEquation = (init = []) => state => ({
+  ...state,
+  equation: init,
+})

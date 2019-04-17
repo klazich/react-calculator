@@ -7,6 +7,8 @@ import {
   updateDigits,
   updateNextFn,
   didJustExecute,
+  updateEquation,
+  resetEquation,
 } from './functions'
 
 const stateReducer = state => funcs => funcs.reduce((a, f) => f(a), state)
@@ -19,10 +21,18 @@ export function mainReducer(state, action) {
       return stateReducer(state)([
         updateAcc(+state.digits),
         updateNextFn(action.operator),
+        updateEquation(state.digits),
+        updateEquation(`${action.operator}`),
         resetDigits(),
       ])
     case EXECUTE:
-      return stateReducer(state)([updateAcc(+state.digits), didJustExecute()])
+      return stateReducer(state)([
+        updateAcc(+state.digits),
+        updateEquation(state.digits),
+        updateEquation('='),
+        resetDigits(),
+        didJustExecute(),
+      ])
     case CLEAR:
       return initialState
     default:
@@ -37,10 +47,17 @@ export function postExecReducer(state, action) {
         resetAcc(),
         resetDigits(),
         resetNextFn(),
+        resetEquation(),
         updateDigits(action.digit),
       ])
     case OPERATOR:
-      return stateReducer(state)([resetDigits(), updateNextFn(action.operator)])
+      return stateReducer(state)([
+        resetDigits(),
+        resetEquation(),
+        updateEquation(`${state.acc}`),
+        updateEquation(`${action.operator}`),
+        updateNextFn(action.operator),
+      ])
     case EXECUTE:
       return stateReducer(state)([didJustExecute()])
     case CLEAR:
@@ -51,9 +68,14 @@ export function postExecReducer(state, action) {
 }
 
 export default function reducer(state, action) {
+  if (state.last !== DIGIT && action.type === state.last) {
+    return state
+  }
+
   const midState = {
     ...state,
     didExecute: false,
+    last: action.type,
   }
 
   return state.didExecute

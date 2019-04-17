@@ -8,5 +8,6 @@ export const initialState = {
   acc: null,
   nextFn: x => x,
   didExecute: false,
-  // equation: [],
+  equation: [],
+  last: null,
 }
