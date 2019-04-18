@@ -1,7 +1,3 @@
-import { divide, multiply, subtract, add, format as mathFormat } from 'mathjs'
-
-export const format = value => mathFormat(+value, { precision: 14 })
-
 // prettier-ignore
 export const keys = [
   'C', '⇦', '÷',
@@ -71,22 +67,13 @@ export const resetDigits = (init = '0') => state => ({
 
 // Operand, operator and accumulator functions
 
-const operatorFunction = operator => {
-  switch (operator) {
-    case '÷':
-      return x => y => divide(x, y)
-    case '×':
-      return x => y => multiply(x, y)
-    case '-':
-      return x => y => subtract(x, y)
-    case '+':
-      return x => y => add(x, y)
-    default:
-      throw new Error(`unknown operator "${operator}"`)
-  }
+const operations = {
+  '÷': x => y => x / y,
+  '×': x => y => x * y,
+  '+': x => y => x + y,
+  '-': x => y => x - y,
 }
-
-// const doIfState = test => func => state => (test(state) ? func(state) : state)
+const operatorFunction = operator => operations[operator]
 
 export const updateAcc = operand => state => ({
   ...state,
