@@ -1,25 +1,34 @@
 import { is } from '.'
 
 const canAppendDecimal = digits => !digits.includes('.')
+const canAppendZero = digits => !is.zero(digits)
 
-const canAppendZero = digits => digits !== '0'
-
+// if digits is a single digit when backspacing, return 0.
+// Otherwise remove the last digit.
 const backspaceDigits = digits =>
   digits.length > 1 ? digits.slice(0, -1) : '0'
 
 export const appendToDigits = digits => char => {
-  if (
-    (is.decimal(char) && !canAppendDecimal(digits)) ||
-    (is.zero(char) && !canAppendZero(digits))
-  )
+  // don't append a decimal when digits includes a decimal
+  if (is.decimal(char) && !canAppendDecimal(digits)) {
     return digits
-
-  if (is.decimal(char) && is.zero(digits)) {
-    return '0.'
   }
 
-  return is.zero(digits) ? char : `${digits}${char}`
+  // don't append a zero when digits is 0
+  if (is.zero(char) && !canAppendZero(digits)) {
+    return digits
+  }
+
+  // special case: No leading zeros - When not appending
+  // a decimal when digits is 0, replace with input digit.
+  if (is.zero(digits) && !is.decimal(char)) {
+    return char
+  }
+
+  return `${digits}${char}`
 }
+
+// State change functions for 'digits' property
 
 export const updateDigits = digit => state => ({
   ...state,
