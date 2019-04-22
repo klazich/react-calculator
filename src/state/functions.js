@@ -1,126 +1,57 @@
-// prettier-ignore
-export const keys = [
-  'C', '⇦', '÷',
-  '7', '8', '9', '×',
-  '4', '5', '6', '-',
-  '1', '2', '3', '+',
-  '0', '.', '=',
-]
+import { didJustExecute, didNotJustExecute, updateLast } from '../functions'
+import { updateDigits, resetDigits } from '../functions/digits'
+import { updateEquation, resetEquation } from '../functions/equation'
+import {
+  updateAcc,
+  updateNextFn,
+  resetAcc,
+  resetNextFn,
+} from '../functions/ops'
 
-export const is = {
-  key: k => keys.includes(k),
-  digit: k => /[0-9⇦.]/.test(k),
-  zero: k => k === '0',
-  backspace: k => k === '⇦',
-  decimal: k => k === '.',
-  clear: k => k === 'C',
-  operator: k => /[÷×+-]/.test(k),
-  execute: k => k === '=',
-}
+const pipe = (...fns) => x => fns.reduce((a, f) => f(a), x)
 
-export const substituteKey = key => {
-  const alt = ['/', '*', 'Escape', 'Backspace', 'Enter']
-  const sub = ['÷', '×', 'C', '⇦', '=']
-  return alt.includes(key) ? sub[alt.indexOf(key)] : key
-}
+export const inputDigit = state => digit => pipe(updateDigits(digit))(state)
 
-// DidExecute functions
+export const inputDigitPostExec = state => digit =>
+  pipe(
+    resetAcc(),
+    resetDigits(),
+    resetNextFn(),
+    resetEquation(),
+    updateDigits(digit)
+  )(state)
 
-export const didJustExecute = () => state => ({
-  ...state,
-  didExecute: true,
-})
+export const inputOperator = state => operator =>
+  pipe(
+    updateAcc(+state.digits),
+    updateNextFn(operator),
+    updateEquation(state.digits),
+    updateEquation(`${operator}`),
+    resetDigits()
+  )(state)
 
-// Digits functions
+export const inputOperatorPostExec = state => operator =>
+  pipe(
+    resetDigits(),
+    resetEquation(),
+    updateEquation(`${state.acc}`),
+    updateEquation(`${operator}`),
+    updateNextFn(operator)
+  )(state)
 
-const canAppendDecimal = digits => !digits.includes('.')
-const canAppendZero = digits => digits !== '0'
+export const inputExecute = state => () =>
+  pipe(
+    updateAcc(+state.digits),
+    updateEquation(state.digits),
+    updateEquation('='),
+    resetDigits(),
+    didJustExecute()
+  )(state)
 
-const backspaceDigits = digits =>
-  digits.length > 1 ? digits.slice(0, -1) : '0'
+export const inputExecutePostExec = state => () => pipe(didJustExecute())(state)
 
-const appendToDigits = digits => char => {
-  if (
-    (is.decimal(char) && !canAppendDecimal(digits)) ||
-    (is.zero(char) && !canAppendZero(digits))
-  )
-    return digits
-
-  if (is.decimal(char) && is.zero(digits)) {
-    return '0.'
-  }
-
-  return is.zero(digits) ? char : `${digits}${char}`
-}
-
-export const updateDigits = digit => state => ({
-  ...state,
-  digits: is.backspace(digit)
-    ? backspaceDigits(state.digits)
-    : appendToDigits(state.digits)(digit),
-})
-
-export const resetDigits = (init = '0') => state => ({
-  ...state,
-  digits: init,
-})
-
-// Operand, operator and accumulator functions
-
-const operations = {
-  '÷': x => y => x / y,
-  '×': x => y => x * y,
-  '+': x => y => x + y,
-  '-': x => y => x - y,
-}
-const operatorFunction = operator => operations[operator]
-
-export const updateAcc = operand => state => ({
-  ...state,
-  acc: state.nextFn(operand),
-})
-
-export const resetAcc = (init = null) => state => ({
-  ...state,
-  acc: init,
-})
-
-export const updateNextFn = operator => state => ({
-  ...state,
-  nextFn: operatorFunction(operator)(state.acc),
-})
-
-export const resetNextFn = (init = x => x) => state => ({
-  ...state,
-  nextFn: init,
-})
-
-// Equation history functions
-
-const canAppendOperand = equation =>
-  equation.length === 0 ||
-  is.operator(equation[equation.length - 1]) ||
-  is.execute(equation[equation.length - 1])
-const canAppendOperator = equation =>
-  equation.length > 0 && !isNaN(equation[equation.length - 1])
-
-const appendIf = test => equation => str =>
-  test(equation) ? [...equation, str] : equation
-
-const appendOperand = equation => operand =>
-  appendIf(canAppendOperand)(equation)(operand)
-const appendOperator = equation => operator =>
-  appendIf(canAppendOperator)(equation)(operator)
-
-export const updateEquation = str => state => ({
-  ...state,
-  equation:
-    is.operator(str) || is.execute(str)
-      ? appendOperator(state.equation)(str)
-      : appendOperand(state.equation)(str),
-})
-
-export const resetEquation = (init = []) => state => ({
-  ...state,
-  equation: init,
-})
+export const midStateChange = state => last =>
+  pipe(
+    didNotJustExecute(),
+    updateLast(last)
+  )(state)

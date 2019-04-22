@@ -1,38 +1,22 @@
 import { CLEAR, DIGIT, EXECUTE, OPERATOR, initialState } from './constants'
 import {
-  resetAcc,
-  resetDigits,
-  resetNextFn,
-  updateAcc,
-  updateDigits,
-  updateNextFn,
-  didJustExecute,
-  updateEquation,
-  resetEquation,
+  inputDigit,
+  inputDigitPostExec,
+  inputExecute,
+  inputExecutePostExec,
+  inputOperator,
+  inputOperatorPostExec,
+  midStateChange,
 } from './functions'
-
-const stateReducer = state => funcs => funcs.reduce((a, f) => f(a), state)
 
 export function mainReducer(state, action) {
   switch (action.type) {
     case DIGIT:
-      return stateReducer(state)([updateDigits(action.digit)])
+      return inputDigit(state)(action.digit)
     case OPERATOR:
-      return stateReducer(state)([
-        updateAcc(+state.digits),
-        updateNextFn(action.operator),
-        updateEquation(state.digits),
-        updateEquation(`${action.operator}`),
-        resetDigits(),
-      ])
+      return inputOperator(state)(action.operator)
     case EXECUTE:
-      return stateReducer(state)([
-        updateAcc(+state.digits),
-        updateEquation(state.digits),
-        updateEquation('='),
-        resetDigits(),
-        didJustExecute(),
-      ])
+      return inputExecute(state)()
     case CLEAR:
       return initialState
     default:
@@ -43,23 +27,11 @@ export function mainReducer(state, action) {
 export function postExecReducer(state, action) {
   switch (action.type) {
     case DIGIT:
-      return stateReducer(state)([
-        resetAcc(),
-        resetDigits(),
-        resetNextFn(),
-        resetEquation(),
-        updateDigits(action.digit),
-      ])
+      return inputDigitPostExec(state)(action.digit)
     case OPERATOR:
-      return stateReducer(state)([
-        resetDigits(),
-        resetEquation(),
-        updateEquation(`${state.acc}`),
-        updateEquation(`${action.operator}`),
-        updateNextFn(action.operator),
-      ])
+      return inputOperatorPostExec(state)(action.operator)
     case EXECUTE:
-      return stateReducer(state)([didJustExecute()])
+      return inputExecutePostExec(state)()
     case CLEAR:
       return initialState
     default:
@@ -72,11 +44,7 @@ export default function reducer(state, action) {
     return state
   }
 
-  const midState = {
-    ...state,
-    didExecute: false,
-    last: action.type,
-  }
+  const midState = midStateChange(state)(action.type)
 
   return state.didExecute
     ? postExecReducer(midState, action)
