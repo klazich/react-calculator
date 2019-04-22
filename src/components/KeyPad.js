@@ -2,13 +2,15 @@ import React from 'react'
 import { Flex } from 'rebass'
 import Key from './Key'
 
-import { keys } from '../state/functions'
+import { keys } from '../functions'
+
+const isWideKey = k => ['=', '⇦'].includes(k)
 
 function KeyPad() {
   return (
     <Flex flexWrap="wrap" bg="gainsboro" p={1} justifyContent="start">
       {keys.map((item, id) => (
-        <Key size={['=', '⇦'].includes(item) ? 2 : 1} value={item} key={id} />
+        <Key size={isWideKey(item) ? 2 : 1} value={item} key={id} />
       ))}
     </Flex>
   )
