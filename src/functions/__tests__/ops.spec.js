@@ -18,6 +18,7 @@ describe('Operations state changes', () => {
       const expected = { ...state, acc: 7 }
       expect(updateAcc(2)(state)).toStrictEqual(expected)
     })
+
     test('acc updates properly given a float', () => {
       const state = {
         ...init,
@@ -27,6 +28,7 @@ describe('Operations state changes', () => {
       const expected = { ...state, acc: 7.71 }
       expect(updateAcc(2.71)(state)).toStrictEqual(expected)
     })
+
     test('resetting acc returns initial state', () => {
       const state = { ...init, acc: 5 }
       const expected = init
@@ -42,18 +44,21 @@ describe('Operations state changes', () => {
         const { nextFn } = updateNextFn('÷')(state)
         expect(nextFn(2)).toEqual(expected(2))
       })
+
       test('multiplication', () => {
         const state = { ...init, acc: 6 }
         const expected = x => 6 * x
         const { nextFn } = updateNextFn('×')(state)
         expect(nextFn(2)).toEqual(expected(2))
       })
+
       test('addition', () => {
         const state = { ...init, acc: 6 }
         const expected = x => 6 + x
         const { nextFn } = updateNextFn('+')(state)
         expect(nextFn(2)).toEqual(expected(2))
       })
+
       test('subtraction', () => {
         const state = { ...init, acc: 6 }
         const expected = x => 6 - x
@@ -61,6 +66,7 @@ describe('Operations state changes', () => {
         expect(nextFn(2)).toEqual(expected(2))
       })
     })
+
     test('resetting nextFn returns initial state', () => {
       const state = { ...init, nextFn: x => x + 1 }
       const expected = x => x

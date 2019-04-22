@@ -4,6 +4,7 @@ const canAppendOperand = equation =>
   equation.length === 0 ||
   is.operator(equation[equation.length - 1]) ||
   is.execute(equation[equation.length - 1])
+
 const canAppendOperator = equation =>
   equation.length > 0 && !isNaN(equation[equation.length - 1])
 
@@ -12,6 +13,7 @@ const appendIf = test => equation => str =>
 
 const appendOperand = equation => operand =>
   appendIf(canAppendOperand)(equation)(operand)
+
 const appendOperator = equation => operator =>
   appendIf(canAppendOperator)(equation)(operator)
 

@@ -1,6 +1,7 @@
 import { is } from '.'
 
 const canAppendDecimal = digits => !digits.includes('.')
+
 const canAppendZero = digits => digits !== '0'
 
 const backspaceDigits = digits =>

@@ -4,6 +4,7 @@ const operations = {
   '+': x => y => x + y,
   '-': x => y => x - y,
 }
+
 const operatorFunction = operator => operations[operator]
 
 export const updateAcc = operand => state => ({
