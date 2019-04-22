@@ -23,3 +23,18 @@ export const substituteKey = key => {
   const sub = ['÷', '×', 'C', '⇦', '=']
   return alt.includes(key) ? sub[alt.indexOf(key)] : key
 }
+
+export const didJustExecute = () => state => ({
+  ...state,
+  didExecute: true,
+})
+
+export const didNotJustExecute = () => state => ({
+  ...state,
+  didExecute: false,
+})
+
+export const updateLast = type => state => ({
+  ...state,
+  last: type,
+})

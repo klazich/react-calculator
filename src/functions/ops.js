@@ -26,8 +26,3 @@ export const resetNextFn = (init = x => x) => state => ({
   ...state,
   nextFn: init,
 })
-
-export const didJustExecute = () => state => ({
-  ...state,
-  didExecute: true,
-})
