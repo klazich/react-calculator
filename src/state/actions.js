@@ -1,5 +1,5 @@
 import { CLEAR, DIGIT, EXECUTE, OPERATOR } from './constants'
-import { is } from './functions'
+import { is } from '../functions'
 
 export const clear = () => ({
   type: CLEAR,
