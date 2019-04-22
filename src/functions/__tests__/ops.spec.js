@@ -1,10 +1,5 @@
-import {
-  updateAcc,
-  resetAcc,
-  updateNextFn,
-  resetNextFn,
-  didJustExecute,
-} from '../ops'
+import { didJustExecute, didNotJustExecute } from '..'
+import { updateAcc, resetAcc, updateNextFn, resetNextFn } from '../ops'
 import { initialState as init } from '../../state/constants'
 
 describe('Operations state changes', () => {
@@ -80,6 +75,12 @@ describe('Operations state changes', () => {
       const state = { ...init, didExecute: false }
       const expected = { ...state, didExecute: true }
       expect(didJustExecute()(state)).toStrictEqual(expected)
+    })
+
+    test('didNotJustExecute changes didExecute property to false', () => {
+      const state = { ...init, didExecute: true }
+      const expected = { ...state, didExecute: false }
+      expect(didNotJustExecute()(state)).toStrictEqual(expected)
     })
   })
 })
