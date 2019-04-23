@@ -1,73 +1,51 @@
-import React, { useReducer } from 'react'
-import * as math from 'mathjs'
+import React, { createContext, useEffect, useReducer } from 'react'
 
 import KeyPad from './KeyPad'
 import Screen from './Screen'
 
-const { divide, multiply, subtract, add } = math
+import { is, substituteKey } from '../functions'
+import { action } from '../state/actions'
+import reducer from '../state/reducers'
+import { initialState } from '../state/constants'
 
-const pf = parseFloat
+export const CalculatorDispatch = createContext(null)
 
-const format = value => math.format(value, 14)
-
-// https://blog.usejournal.com/everything-react-first-app-188b33a880ca
-
-const appendValue = value => digit =>
-  digit === '.' && /\./.test(`${value}`)
-    ? value
-    : digit === '0' && value === ''
-    ? value
-    : `${value}${digit}`
-
-const initialState = { value: '0', stack: [], result: 0 }
-
-function reducer(state, action) {
-  const { value, stack, result } = state
-  const { type } = action
-  const append = appendValue(value)
-
-  console.log(value, stack)
-
-  if (/[0-9.]/.test(type)) return { ...state, value: append(type) }
-
-  switch (type) {
-    case '÷':
-      return { ...state, value: '0', stack: [...stack, pf(value), divide] }
-    case '×':
-      return { ...state, value: '0', stack: [...stack, pf(value), multiply] }
-    case '-':
-      return { ...state, value: '0', stack: [...stack, pf(value), subtract] }
-    case '+':
-      return { ...state, value: '0', stack: [...stack, pf(value), add] }
-    case '⇦':
-      return { ...state, value: `${value}`.slice(0, -1) || '' }
-    case 'C':
-      return initialState
-    case '=':
-      if (stack.length < 2) return state
-      let s = [...stack, pf(value)]
-      while (s.length > 2) {
-        const [x, op, y, ...rest] = s
-        s = [op(x, y), ...rest]
-      }
-      return { value: `${s[0]}`, stack: [], result: s[0] }
-    default:
-      throw new Error(`Type: "${type}" is unknown`)
-  }
+const logReducer = reducer => (state, action) => {
+  const newState = reducer(state, action)
+  console.log(newState)
+  return newState
 }
 
 function Calculator() {
-  const [state, dispatch] = useReducer(reducer, initialState)
+  const [state, dispatch] = useReducer(logReducer(reducer), initialState)
 
-  const handleOnKey = type => dispatch({ type })
+  useEffect(() => {
+    const onKeyDown = event => {
+      event.preventDefault()
+
+      const key = substituteKey(event.key)
+      if (is.key(key)) {
+        dispatch(action(key))
+      }
+    }
+
+    document.addEventListener('keydown', onKeyDown, false)
+    return () => {
+      document.removeEventListener('keydown', onKeyDown, false)
+    }
+  })
+
+  const display = ['OPERATOR', 'EXECUTE'].includes(state.last)
+    ? state.acc
+    : state.digits
 
   return (
     <main>
-      <Screen fontSize={6} css={{ height: 'auto' }}>
-        {format(state.result)}
-      </Screen>
-      <Screen>{format(math.eval(state.value))}</Screen>
-      <KeyPad onKey={v => handleOnKey(v)} />
+      <Screen fontSize={2}>{state.equation.join(' ') || '_'}</Screen>
+      <Screen>{display}</Screen>
+      <CalculatorDispatch.Provider value={dispatch}>
+        <KeyPad />
+      </CalculatorDispatch.Provider>
     </main>
   )
 }
