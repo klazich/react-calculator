@@ -4,11 +4,11 @@ import Key from './Key'
 
 import { keys } from '../functions'
 
-const isWideKey = k => ['=', '⇦'].includes(k)
+const isWideKey = k => ['=', '↤'].includes(k)
 
 function KeyPad() {
   return (
-    <Flex flexWrap="wrap" bg="gainsboro" p={1} justifyContent="start">
+    <Flex flexWrap="wrap" p={0} justifyContent="start">
       {keys.map((item, id) => (
         <Key size={isWideKey(item) ? 2 : 1} value={item} key={id} />
       ))}

@@ -7,6 +7,8 @@ import { action } from '../state/actions'
 import { CalculatorDispatch } from './Calculator'
 
 const Button = styled(Btn)`
+  font-family: Iosevka Web;
+  font-weight: 300;
   background: rgba(0, 0, 0, 0.5);
   outline: none;
   opacity: 0.8;
@@ -26,11 +28,12 @@ function Key(props) {
   const { value, size } = props
 
   return (
-    <Box width={size / 4} p={1} {...props}>
+    <Box width={size / 4} p={'1px'} {...props}>
       <Button
+        borderRadius={0}
         color="white"
         width={1}
-        fontSize={4}
+        fontSize={5}
         onClick={() => dispatch(action(value))}
       >
         {value}

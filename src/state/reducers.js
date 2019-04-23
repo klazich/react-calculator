@@ -12,11 +12,11 @@ import {
 export function mainReducer(state, action) {
   switch (action.type) {
     case DIGIT:
-      return inputDigit(state)(action.digit)
+      return inputDigit(action.digit)(state)
     case OPERATOR:
-      return inputOperator(state)(action.operator)
+      return inputOperator(action.operator)(state)
     case EXECUTE:
-      return inputExecute(state)()
+      return inputExecute()(state)
     case CLEAR:
       return initialState
     default:
@@ -27,11 +27,11 @@ export function mainReducer(state, action) {
 export function postExecReducer(state, action) {
   switch (action.type) {
     case DIGIT:
-      return inputDigitPostExec(state)(action.digit)
+      return inputDigitPostExec(action.digit)(state)
     case OPERATOR:
-      return inputOperatorPostExec(state)(action.operator)
+      return inputOperatorPostExec(action.operator)(state)
     case EXECUTE:
-      return inputExecutePostExec(state)()
+      return inputExecutePostExec()(state)
     case CLEAR:
       return initialState
     default:
@@ -44,7 +44,7 @@ export default function reducer(state, action) {
     return state
   }
 
-  const midState = midStateChange(state)(action.type)
+  const midState = midStateChange(action.type)(state)
 
   return state.didExecute
     ? postExecReducer(midState, action)

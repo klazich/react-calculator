@@ -1,6 +1,6 @@
 // prettier-ignore
 export const keys = [
-  'C', '⇦', '÷',
+  'C', '↤', '÷',
   '7', '8', '9', '×',
   '4', '5', '6', '-',
   '1', '2', '3', '+',
@@ -9,9 +9,9 @@ export const keys = [
 
 export const is = {
   key: k => keys.includes(k),
-  digit: k => /[0-9⇦.]/.test(k),
+  digit: k => /[0-9↤.]/.test(k),
   zero: k => k === '0',
-  backspace: k => k === '⇦',
+  backspace: k => k === '↤',
   decimal: k => k === '.',
   clear: k => k === 'C',
   operator: k => /[÷×+-]/.test(k),
@@ -20,7 +20,7 @@ export const is = {
 
 export const substituteKey = key => {
   const alt = ['/', '*', 'Escape', 'Backspace', 'Enter']
-  const sub = ['÷', '×', 'C', '⇦', '=']
+  const sub = ['÷', '×', 'C', '↤', '=']
   return alt.includes(key) ? sub[alt.indexOf(key)] : key
 }
 

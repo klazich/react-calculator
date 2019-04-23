@@ -1,18 +1,25 @@
 import React from 'react'
-import { Heading } from 'rebass'
+import { Box, Heading as h } from 'rebass'
+import styled from 'styled-components'
+
+const Heading = styled(h)`
+  border: 5px black;
+`
 
 const Screen = props => (
-  <Heading
-    py={3}
-    px={2}
-    my={2}
-    bg="white"
-    fontFamily="monospace"
-    textAlign="right"
-    {...props}
-  >
-    {props.children}
-  </Heading>
+  <Box my={1} border="black">
+    <Heading
+      py={2}
+      px={1}
+      bg="AntiqueWhite"
+      fontFamily="Iosevka Web"
+      fontWeight={400}
+      textAlign="right"
+      {...props}
+    >
+      {props.children}
+    </Heading>
+  </Box>
 )
 
 export default Screen

@@ -10,9 +10,9 @@ import {
 
 const pipe = (...fns) => x => fns.reduce((a, f) => f(a), x)
 
-export const inputDigit = state => digit => pipe(updateDigits(digit))(state)
+export const inputDigit = digit => state => pipe(updateDigits(digit))(state)
 
-export const inputDigitPostExec = state => digit =>
+export const inputDigitPostExec = digit => state =>
   pipe(
     resetAcc(),
     resetDigits(),
@@ -21,7 +21,7 @@ export const inputDigitPostExec = state => digit =>
     updateDigits(digit)
   )(state)
 
-export const inputOperator = state => operator =>
+export const inputOperator = operator => state =>
   pipe(
     updateAcc(+state.digits),
     updateNextFn(operator),
@@ -30,27 +30,26 @@ export const inputOperator = state => operator =>
     resetDigits()
   )(state)
 
-export const inputOperatorPostExec = state => operator =>
+export const inputOperatorPostExec = operator => state =>
   pipe(
     resetDigits(),
     resetEquation(),
+    updateNextFn(operator),
     updateEquation(`${state.acc}`),
-    updateEquation(`${operator}`),
-    updateNextFn(operator)
+    updateEquation(`${operator}`)
   )(state)
 
-export const inputExecute = state => () =>
+export const inputExecute = () => state =>
   pipe(
     updateAcc(+state.digits),
     updateEquation(state.digits),
-    updateEquation('='),
     resetDigits(),
     didJustExecute()
   )(state)
 
-export const inputExecutePostExec = state => () => pipe(didJustExecute())(state)
+export const inputExecutePostExec = () => state => pipe(didJustExecute())(state)
 
-export const midStateChange = state => last =>
+export const midStateChange = last => state =>
   pipe(
     didNotJustExecute(),
     updateLast(last)

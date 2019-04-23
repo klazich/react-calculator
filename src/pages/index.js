@@ -1,7 +1,7 @@
 import React from 'react'
-import { Box } from 'rebass'
+import { Box, Button } from 'rebass'
 
-// import Layout from '../components/Layout'
+import Layout from '../layouts'
 import Calculator from '../components/Calculator'
 
 const Container = props => (
@@ -17,9 +17,11 @@ const Container = props => (
 )
 
 export default () => (
-  <Container bg="lightblue">
-    <Box mx="auto" width={256}>
-      <Calculator />
-    </Box>
-  </Container>
+  <Layout>
+    <Container>
+      <Box mx="auto" width={256}>
+        <Calculator />
+      </Box>
+    </Container>
+  </Layout>
 )
