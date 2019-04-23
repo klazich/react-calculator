@@ -6,6 +6,6 @@ module.exports = {
         // Add any options here
       },
     },
-    `gatsby-plugin-flow`
+    `gatsby-plugin-flow`,
   ],
 }
