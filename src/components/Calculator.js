@@ -1,7 +1,9 @@
 import React, { createContext, useEffect, useReducer } from 'react'
+import { Box } from 'rebass'
 
 import KeyPad from './KeyPad'
 import Screen from './Screen'
+import InputScreen from './Display/InputScreen'
 
 import { is, substituteKey } from '../functions'
 import { action } from '../state/actions'
@@ -41,8 +43,8 @@ function Calculator() {
 
   return (
     <main>
-      <Screen fontSize={2}>{state.equation.join(' ') || '_'}</Screen>
-      <Screen>{display}</Screen>
+      <Screen fontSize={1}>{state.equation.join(' ') || '0'}</Screen>
+      <InputScreen>{display}</InputScreen>
       <CalculatorDispatch.Provider value={dispatch}>
         <KeyPad />
       </CalculatorDispatch.Provider>
