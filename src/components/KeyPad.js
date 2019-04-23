@@ -1,7 +1,7 @@
 import React from 'react'
 import { Flex } from 'rebass'
-import Key from './Key'
 
+import Key from './Key'
 import { keys } from '../functions'
 
 const isWideKey = k => ['=', '↤'].includes(k)

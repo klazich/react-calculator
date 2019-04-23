@@ -9,5 +9,6 @@ export const initialState = {
   nextFn: x => x,
   didExecute: false,
   equation: [],
+  history: Array(5).fill(''),
   last: null,
 }

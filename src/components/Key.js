@@ -18,7 +18,9 @@ const Button = styled(Btn)`
   }
   &:active {
     background: #999;
-    box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.6);
+    transform: scale(0.95);
+    /* opacity: 1; */
+    /* box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.6); */
   }
 `
 

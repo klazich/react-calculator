@@ -1,9 +1,9 @@
 import React, { createContext, useEffect, useReducer } from 'react'
-import { Box } from 'rebass'
 
 import KeyPad from './KeyPad'
-import Screen from './Screen'
 import InputScreen from './Display/InputScreen'
+import EquationScreen from './Display/EquationScreen'
+import HistoryScreen from './Display/HistoryScreen'
 
 import { is, substituteKey } from '../functions'
 import { action } from '../state/actions'
@@ -43,7 +43,8 @@ function Calculator() {
 
   return (
     <main>
-      <Screen fontSize={1}>{state.equation.join(' ') || '0'}</Screen>
+      <HistoryScreen history={state.history} />
+      <EquationScreen>{state.equation.join(' ')}</EquationScreen>
       <InputScreen>{display}</InputScreen>
       <CalculatorDispatch.Provider value={dispatch}>
         <KeyPad />

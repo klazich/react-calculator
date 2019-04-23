@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Button } from 'rebass'
+import { Box } from 'rebass'
 
 import Layout from '../layouts'
 import Calculator from '../components/Calculator'

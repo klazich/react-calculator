@@ -1,6 +1,7 @@
 import { didJustExecute, didNotJustExecute, updateLast } from '../functions'
 import { updateDigits, resetDigits } from '../functions/digits'
 import { updateEquation, resetEquation } from '../functions/equation'
+import { updateHistory, resetHistory } from '../functions/history'
 import {
   updateAcc,
   updateNextFn,
@@ -14,6 +15,7 @@ export const inputDigit = digit => state => pipe(updateDigits(digit))(state)
 
 export const inputDigitPostExec = digit => state =>
   pipe(
+    updateHistory(state.equation),
     resetAcc(),
     resetDigits(),
     resetNextFn(),
@@ -32,6 +34,7 @@ export const inputOperator = operator => state =>
 
 export const inputOperatorPostExec = operator => state =>
   pipe(
+    updateHistory(state.equation),
     resetDigits(),
     resetEquation(),
     updateNextFn(operator),
