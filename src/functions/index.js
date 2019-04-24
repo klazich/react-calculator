@@ -9,12 +9,12 @@ export const keys = [
 
 export const is = {
   key: k => keys.includes(k),
-  digit: k => /[0-9↤.]/.test(k),
+  digit: k => /^[0-9↤.]$/.test(k),
   zero: k => k === '0',
   backspace: k => k === '↤',
   decimal: k => k === '.',
   clear: k => k === 'C',
-  operator: k => /[÷×+-]/.test(k),
+  operator: k => /^[÷×+-]$/.test(k),
   execute: k => k === '=',
 }
 

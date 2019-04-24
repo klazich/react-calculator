@@ -3,9 +3,9 @@ const addEquation = equation => history => [
   equation.join(' '),
 ]
 
-export const updateHistory = equation => state => ({
+export const updateHistory = () => state => ({
   ...state,
-  history: addEquation(equation)(state.history),
+  history: addEquation(state.equation)(state.history),
 })
 
 export const resetHistory = (init = Array(5).fill('')) => state => ({
