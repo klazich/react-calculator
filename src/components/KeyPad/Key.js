@@ -3,8 +3,8 @@ import { Box, Button as Btn } from 'rebass'
 import styled from 'styled-components'
 // import PropTypes from 'prop-types'
 
-import { action } from '../state/actions'
-import { CalculatorDispatch } from './Calculator'
+import { action } from '../../state/actions'
+import { CalculatorDispatch } from '../Calculator'
 
 const Button = styled(Btn)`
   font-family: Iosevka Web;
