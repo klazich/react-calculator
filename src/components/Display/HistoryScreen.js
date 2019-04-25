@@ -3,21 +3,18 @@ import { Flex, Card } from 'rebass'
 
 import Screen from './Screen'
 
-const Row = props => (
+const Row = ({ children }) => (
   <Screen
     width={1}
-    px={2}
-    py={1}
-    bg="#f6f6ff"
-    color="DimGrey"
     fontWeight={400}
     fontSize={1}
-    textAlign="right"
     css={{
       height: '26px',
+      overflow: 'hidden',
+      textOverflow: 'clip',
     }}
   >
-    {props.children}
+    {children}
   </Screen>
 )
 
