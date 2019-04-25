@@ -1,4 +1,4 @@
-import { didJustExecute, didNotJustExecute } from '..'
+import { didJustExecute, didNotJustExecute } from '../functions'
 import { updateAcc, resetAcc, updateNextFn, resetNextFn } from '../ops'
 import { initialState as init } from '../../state/constants'
 

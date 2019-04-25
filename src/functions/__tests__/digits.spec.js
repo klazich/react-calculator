@@ -54,16 +54,16 @@ describe('Digits state changes', () => {
   })
 
   describe(`Updating with '⇦'`, () => {
-    test(`will backspace digits state when '⇦' is update`, () => {
+    test(`will backspace digits state when '↤' is update`, () => {
       const state = { ...init, digits: '234' }
       const expected = { ...state, digits: '23' }
-      expect(updateDigits('⇦')(state)).toStrictEqual(expected)
+      expect(updateDigits('↤')(state)).toStrictEqual(expected)
     })
 
     test(`will be '0' on backspace when digits state length is one`, () => {
       const state = { ...init, digits: '9' }
       const expected = { ...state, digits: '0' }
-      expect(updateDigits('⇦')(state)).toStrictEqual(expected)
+      expect(updateDigits('↤')(state)).toStrictEqual(expected)
     })
   })
 
