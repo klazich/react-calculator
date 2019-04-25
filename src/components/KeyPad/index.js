@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex } from 'rebass'
+import { Flex, Card } from 'rebass'
 
 import Key from './Key'
 import { keys } from '../../functions/functions'
@@ -8,11 +8,13 @@ const isWideKey = k => ['=', '↤'].includes(k)
 
 function KeyPad() {
   return (
-    <Flex flexWrap="wrap" p={0} justifyContent="start">
-      {keys.map((item, id) => (
-        <Key size={isWideKey(item) ? 2 : 1} value={item} key={id} />
-      ))}
-    </Flex>
+    <Card boxShadow="0 2px 10px rgba(0, 0, 0, 0.4)" bg="#f6f6ff">
+      <Flex flexWrap="wrap" justifyContent="start">
+        {keys.map((item, id) => (
+          <Key size={isWideKey(item) ? 2 : 1} value={item} key={id} />
+        ))}
+      </Flex>
+    </Card>
   )
 }
 

@@ -35,7 +35,7 @@ function Calculator() {
     }
   })
 
-  const display = ['OPERATOR', 'EXECUTE'].includes(state.last)
+  const show = ['OPERATOR', 'EXECUTE'].includes(state.last)
     ? state.acc
     : state.digits
 
@@ -44,7 +44,7 @@ function Calculator() {
       <Display
         history={state.history}
         equation={state.equation.join(' ')}
-        input={display}
+        input={show}
       />
       <CalculatorDispatch.Provider value={dispatch}>
         <KeyPad />

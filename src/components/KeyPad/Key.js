@@ -12,9 +12,9 @@ function Key({ value, size }) {
   const dispatch = useContext(CalculatorDispatch)
 
   return (
-    <Box width={size / 4} p={'1px'}>
+    <Box width={size / 4}>
       <Button
-        bg="rgba(0, 0, 0, 0.5)"
+        bg="rgba(0, 0, 0, 0.4)"
         color="white"
         borderRadius={0}
         width={1}
