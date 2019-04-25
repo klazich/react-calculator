@@ -3,21 +3,21 @@ import React, { createContext, useEffect, useReducer } from 'react'
 import KeyPad from './KeyPad'
 import Display from './Display'
 
-import { is, substituteKey } from '../functions'
+import { is, substituteKey } from '../functions/functions'
 import { action } from '../state/actions'
 import reducer from '../state/reducers'
 import { initialState } from '../state/constants'
 
 export const CalculatorDispatch = createContext(null)
 
-const logReducer = reducer => (state, action) => {
+const logState = reducer => (state, action) => {
   const newState = reducer(state, action)
   console.log(newState)
   return newState
 }
 
 function Calculator() {
-  const [state, dispatch] = useReducer(logReducer(reducer), initialState)
+  const [state, dispatch] = useReducer(logState(reducer), initialState)
 
   useEffect(() => {
     const onKeyDown = event => {

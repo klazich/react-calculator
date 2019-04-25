@@ -1,10 +1,10 @@
 import React from 'react'
-import { Heading } from 'rebass'
+import { Text } from 'rebass'
 
 const Screen = props => (
-  <Heading fontFamily="Iosevka Web" {...props}>
+  <Text fontFamily="Iosevka Web" {...props}>
     {props.children}
-  </Heading>
+  </Text>
 )
 
 export default Screen

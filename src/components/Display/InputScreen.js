@@ -4,15 +4,14 @@ import Screen from './Screen'
 
 const InputScreen = props => (
   <Screen
-    py={2}
-    px={1}
-    my={1}
+    px={2}
+    py={1}
+    mb={1}
     bg="AntiqueWhite"
     color="DimGrey"
-    fontWeight={400}
-    fontSize={5}
+    fontWeight={600}
+    fontSize={6}
     textAlign="right"
-    {...props}
   >
     {props.children}
   </Screen>

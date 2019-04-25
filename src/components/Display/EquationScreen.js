@@ -4,9 +4,9 @@ import Screen from './Screen'
 
 const EquationScreen = props => (
   <Screen
-    py={2}
-    px={1}
-    mt={1}
+    px={2}
+    py={1}
+    my={1}
     bg="AntiqueWhite"
     color="DimGrey"
     fontWeight={400}
@@ -14,7 +14,7 @@ const EquationScreen = props => (
     textAlign="right"
     {...props}
     css={{
-      height: '32px',
+      height: '26px',
     }}
   >
     {props.children}

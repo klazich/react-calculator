@@ -1,44 +1,40 @@
 import React, { useContext } from 'react'
-import { Box, Button as Btn } from 'rebass'
-import styled from 'styled-components'
+import { Box, Button, Text } from 'rebass'
 // import PropTypes from 'prop-types'
 
 import { action } from '../../state/actions'
 import { CalculatorDispatch } from '../Calculator'
 
-const Button = styled(Btn)`
-  font-family: Iosevka Web;
-  font-weight: 300;
-  background: rgba(0, 0, 0, 0.5);
-  outline: none;
-  opacity: 0.8;
-  transition: opacity 0.2s ease-in-out;
-  &:hover {
-    opacity: 1;
-  }
-  &:active {
-    background: #999;
-    transform: scale(0.95);
-    /* opacity: 1; */
-    /* box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.6); */
-  }
-`
+/* background: rgba(0, 0, 0, 0.5); */
+/* box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.6); */
 
-function Key(props) {
+function Key({ value, size }) {
   const dispatch = useContext(CalculatorDispatch)
 
-  const { value, size } = props
-
   return (
-    <Box width={size / 4} p={'1px'} {...props}>
+    <Box width={size / 4} p={'1px'}>
       <Button
-        borderRadius={0}
+        bg="rgba(0, 0, 0, 0.5)"
         color="white"
+        borderRadius={0}
         width={1}
-        fontSize={5}
         onClick={() => dispatch(action(value))}
+        css={{
+          outline: 'none',
+          opacity: 0.8,
+          transition: 'opacity 0.2s ease-in-out',
+          '&:hover': {
+            opacity: 1,
+          },
+          '&:active': {
+            background: '#999',
+            transform: 'scale(0.95)',
+          },
+        }}
       >
-        {value}
+        <Text fontFamily="Iosevka Web" fontSize={5} fontWeight={300}>
+          {value}
+        </Text>
       </Button>
     </Box>
   )
