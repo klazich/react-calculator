@@ -15,7 +15,7 @@ function Key({ value, size }) {
     <Box width={size / 4}>
       <Button
         bg="rgba(0, 0, 0, 0.4)"
-        color="white"
+        color="#f6f6ff"
         borderRadius={0}
         width={1}
         onClick={() => dispatch(action(value))}
