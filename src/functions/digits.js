@@ -1,4 +1,4 @@
-import { is } from '.'
+import { is } from './functions'
 
 const canAppendDecimal = digits => !digits.includes('.')
 const canAppendZero = digits => !is.zero(digits)

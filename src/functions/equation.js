@@ -1,4 +1,4 @@
-import { is } from '.'
+import { is } from './functions'
 
 const lastElm = arr => arr[arr.length - 1]
 

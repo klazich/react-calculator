@@ -7,7 +7,7 @@ import {
   inputOperator,
   inputOperatorPostExec,
   midStateChange,
-} from './functions'
+} from '../functions'
 
 export function mainReducer(state, action) {
   switch (action.type) {

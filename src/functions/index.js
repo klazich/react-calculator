@@ -1,40 +1,50 @@
-// prettier-ignore
-export const keys = [
-  'C', '↤', '÷',
-  '7', '8', '9', '×',
-  '4', '5', '6', '-',
-  '1', '2', '3', '+',
-  '0', '.', '=',
-]
+import { didJustExecute, didNotJustExecute, updateLast } from './functions'
+import { updateDigits, resetDigits } from './digits'
+import { updateEquation, resetEquation } from './equation'
+import { updateHistory } from './history'
+import { updateAcc, updateNextFn, resetAcc, resetNextFn } from './ops'
 
-export const is = {
-  key: k => keys.includes(k),
-  digit: k => /^[0-9↤.]$/.test(k),
-  zero: k => k === '0',
-  backspace: k => k === '↤',
-  decimal: k => k === '.',
-  clear: k => k === 'C',
-  operator: k => /^[÷×+-]$/.test(k),
-  execute: k => k === '=',
-}
+const pipe = (...fns) => x => fns.reduce((a, f) => f(a), x)
 
-export const substituteKey = key => {
-  const alt = ['/', '*', 'Escape', 'Backspace', 'Enter']
-  const sub = ['÷', '×', 'C', '↤', '=']
-  return alt.includes(key) ? sub[alt.indexOf(key)] : key
-}
+export const inputDigit = digit => state => pipe(updateDigits(digit))(state)
 
-export const didJustExecute = () => state => ({
-  ...state,
-  didExecute: true,
-})
+export const inputDigitPostExec = digit => state =>
+  pipe(
+    resetAcc(),
+    resetNextFn(),
+    updateDigits(digit)
+  )(state)
 
-export const didNotJustExecute = () => state => ({
-  ...state,
-  didExecute: false,
-})
+export const inputOperator = operator => state =>
+  pipe(
+    updateAcc(+state.digits),
+    updateNextFn(operator),
+    updateEquation(state.digits),
+    updateEquation(`${operator}`),
+    resetDigits()
+  )(state)
 
-export const updateLast = type => state => ({
-  ...state,
-  last: type,
-})
+export const inputOperatorPostExec = operator => state =>
+  pipe(
+    updateNextFn(operator),
+    updateEquation(`${state.acc}`),
+    updateEquation(`${operator}`)
+  )(state)
+
+export const inputExecute = () => state =>
+  pipe(
+    updateAcc(+state.digits),
+    updateEquation(state.digits),
+    updateHistory(),
+    resetDigits(),
+    resetEquation(),
+    didJustExecute()
+  )(state)
+
+export const inputExecutePostExec = () => state => pipe(didJustExecute())(state)
+
+export const midStateChange = last => state =>
+  pipe(
+    didNotJustExecute(),
+    updateLast(last)
+  )(state)
