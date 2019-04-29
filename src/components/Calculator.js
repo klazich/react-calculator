@@ -24,9 +24,7 @@ function Calculator() {
       event.preventDefault()
 
       const key = substituteKey(event.key)
-      if (is.key(key)) {
-        dispatch(action(key))
-      }
+      if (is.key(key)) dispatch(action(key))
     }
 
     document.addEventListener('keydown', onKeyDown, false)
