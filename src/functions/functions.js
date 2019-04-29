@@ -24,6 +24,24 @@ export const substituteKey = key => {
   return alt.includes(key) ? sub[alt.indexOf(key)] : key
 }
 
+const operations = {
+  '÷': x => y => x / y,
+  '×': x => y => x * y,
+  '+': x => y => x + y,
+  '-': x => y => x - y,
+}
+
+const operatorFunction = operator => operations[operator]
+
+const doOperation = ([acc, operator, operand]) =>
+  operatorFunction(operator)(acc)(operand)
+
+export const calculateEquation = ([acc, ...equation]) =>
+  equation.reduce(
+    (a, c) => (a.length < 2 ? [...a, c] : [doOperation([...a, c])]),
+    [acc]
+  )[0]
+
 export const didJustExecute = () => state => ({
   ...state,
   didExecute: true,

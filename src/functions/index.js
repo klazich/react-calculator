@@ -1,8 +1,12 @@
-import { didJustExecute, didNotJustExecute, updateLast } from './functions'
+import {
+  didJustExecute,
+  didNotJustExecute,
+  updateLast,
+  calculateEquation,
+} from './functions'
 import { updateDigits, resetDigits } from './digits'
 import { updateEquation, resetEquation } from './equation'
 import { updateHistory } from './history'
-import { updateAcc, updateNextFn, resetAcc, resetNextFn } from './ops'
 
 const pipe = (...fns) => x => fns.reduce((a, f) => f(a), x)
 
@@ -10,34 +14,30 @@ export const inputDigit = digit => state => pipe(updateDigits(digit))(state)
 
 export const inputDigitPostExec = digit => state =>
   pipe(
-    resetAcc(),
-    resetNextFn(),
+    updateHistory(),
+    resetEquation(),
     updateDigits(digit)
   )(state)
 
 export const inputOperator = operator => state =>
   pipe(
-    updateAcc(+state.digits),
-    updateNextFn(operator),
-    updateEquation(state.digits),
-    updateEquation(`${operator}`),
+    updateEquation(+state.digits),
+    updateEquation(operator),
     resetDigits()
   )(state)
 
 export const inputOperatorPostExec = operator => state =>
   pipe(
-    updateNextFn(operator),
-    updateEquation(`${state.acc}`),
-    updateEquation(`${operator}`)
+    updateHistory(),
+    resetEquation(),
+    updateEquation(calculateEquation(state.equation)),
+    updateEquation(operator)
   )(state)
 
 export const inputExecute = () => state =>
   pipe(
-    updateAcc(+state.digits),
-    updateEquation(state.digits),
-    updateHistory(),
+    updateEquation(+state.digits),
     resetDigits(),
-    resetEquation(),
     didJustExecute()
   )(state)
 

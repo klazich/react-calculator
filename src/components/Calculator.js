@@ -3,7 +3,7 @@ import React, { createContext, useEffect, useReducer } from 'react'
 import KeyPad from './KeyPad'
 import Display from './Display'
 
-import { is, substituteKey } from '../functions/functions'
+import { is, substituteKey, calculateEquation } from '../functions/functions'
 import { action } from '../state/actions'
 import reducer from '../state/reducers'
 import { initialState } from '../state/constants'
@@ -33,9 +33,9 @@ function Calculator() {
     }
   })
 
-  const show = ['OPERATOR', 'EXECUTE'].includes(state.last)
-    ? state.acc
-    : state.digits
+  const acc = state.equation.length < 3 ? 0 : calculateEquation(state.equation)
+
+  const show = ['OPERATOR', 'EXECUTE'].includes(state.last) ? acc : state.digits
 
   return (
     <main>
