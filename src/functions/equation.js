@@ -12,6 +12,8 @@ const appendOperator = appendIf(canAppendOperator)
 const appendToEquationIfCan = input =>
   is.operator(input) ? appendOperator(input) : appendOperand(input)
 
+// state change functions for 'equation' property
+
 export const updateEquation = input => state => ({
   ...state,
   equation: appendToEquationIfCan(input)(state.equation),

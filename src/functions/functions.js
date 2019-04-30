@@ -42,6 +42,8 @@ export const calculateEquation = ([acc, ...equation]) =>
     [acc]
   )[0]
 
+// state change functions for 'didExecute' and 'last' property
+
 export const didJustExecute = () => state => ({
   ...state,
   didExecute: true,
