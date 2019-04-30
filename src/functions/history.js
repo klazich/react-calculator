@@ -1,7 +1,4 @@
-const addEquation = equation => history => [
-  ...history.slice(1, 5),
-  equation.join(' '),
-]
+const addEquation = equation => history => [...history.slice(1, 5), equation]
 
 export const updateHistory = () => state => ({
   ...state,

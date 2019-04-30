@@ -6,8 +6,6 @@ import Screen from './Screen'
 const Row = ({ children }) => (
   <Screen
     width={1}
-    fontWeight={400}
-    fontSize={1}
     css={{
       height: '26px',
       overflow: 'hidden',
@@ -22,7 +20,7 @@ const HistoryScreen = props => (
   <Card boxShadow="0 2px 10px rgba(0, 0, 0, 0.2)" bg="#f6f6ff">
     <Flex flexWrap="wrap">
       {props.history.map((eq, id) => (
-        <Row key={id}>{eq}</Row>
+        <Row key={id}>{eq.join(' ')}</Row>
       ))}
     </Flex>
   </Card>

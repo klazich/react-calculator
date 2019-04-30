@@ -1,24 +1,20 @@
 import { is } from './functions'
 
-const lastElm = arr => arr[arr.length - 1]
+const append = x => arr => [...arr, x]
+const appendIf = test => x => arr => (test(arr) ? append(x)(arr) : arr)
 
-const canAppendOperand = equation =>
-  equation.length === 0 || is.operator(lastElm(equation))
-
-const canAppendOperator = equation =>
-  equation.length > 0 && !isNaN(lastElm(equation))
-
-const appendIf = test => str => equation =>
-  test(equation) ? [...equation, str] : equation
+const canAppendOperand = equation => equation.length % 2 === 0
+const canAppendOperator = equation => equation.length % 2 !== 0
 
 const appendOperand = appendIf(canAppendOperand)
 const appendOperator = appendIf(canAppendOperator)
 
-export const updateEquation = str => state => ({
+const appendToEquationIfCan = input =>
+  is.operator(input) ? appendOperator(input) : appendOperand(input)
+
+export const updateEquation = input => state => ({
   ...state,
-  equation: is.operator(str)
-    ? appendOperator(str)(state.equation)
-    : appendOperand(str)(state.equation),
+  equation: appendToEquationIfCan(input)(state.equation),
 })
 
 export const resetEquation = (init = []) => state => ({

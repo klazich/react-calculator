@@ -18,7 +18,6 @@ export const appendToDigits = char => digits => {
   if (is.decimal(char)) return appendDecimal(digits)
   // don't append a zero when digits is 0
   if (is.zero(char)) return appendZero(digits)
-
   // special case: No leading zeros - When not appending
   // a decimal when digits is 0, replace with input digit.
   if (is.zero(digits) && !is.decimal(char)) return char

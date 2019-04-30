@@ -5,10 +5,8 @@ export const EXECUTE = 'EXECUTE'
 
 export const initialState = {
   digits: '0',
-  acc: null,
-  nextFn: x => x,
   didExecute: false,
   equation: [],
-  history: Array(5).fill(''),
+  history: Array(5).fill([]),
   last: null,
 }
