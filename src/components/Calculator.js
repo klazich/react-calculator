@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useReducer } from 'react'
+import React, { createContext, useEffect, useReducer, useMemo } from 'react'
 
 import KeyPad from './KeyPad'
 import Display from './Display'
@@ -8,6 +8,7 @@ import { action } from '../state/actions'
 import reducer from '../state/reducers'
 import { initialState } from '../state/constants'
 
+//
 export const CalculatorDispatch = createContext(null)
 
 const logState = reducer => (state, action) => {
@@ -19,6 +20,7 @@ const logState = reducer => (state, action) => {
 function Calculator() {
   const [state, dispatch] = useReducer(logState(reducer), initialState)
 
+  // useEffect hook to capture `keydown` events
   useEffect(() => {
     const onKeyDown = event => {
       event.preventDefault()
@@ -33,7 +35,8 @@ function Calculator() {
     }
   })
 
-  const acc = state.equation.length < 3 ? 0 : calculateEquation(state.equation)
+  const calculateAcc = eq => (eq.length < 3 ? 0 : calculateEquation(eq))
+  const acc = useMemo(() => calculateAcc(state.equation), [state.equation])
 
   const show = ['OPERATOR', 'EXECUTE'].includes(state.last) ? acc : state.digits
 
