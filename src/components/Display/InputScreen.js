@@ -8,7 +8,8 @@ const InputScreen = ({ children }) => (
     <Screen
       my={2}
       fontWeight={600}
-      fontSize={6}
+      fontSize={5}
+      size={15}
       css={{
         overflow: 'hidden',
         textOverflow: 'clip',
