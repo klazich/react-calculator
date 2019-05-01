@@ -8,7 +8,6 @@ import { action } from '../state/actions'
 import reducer from '../state/reducers'
 import { initialState } from '../state/constants'
 
-//
 export const CalculatorDispatch = createContext(null)
 
 const logState = reducer => (state, action) => {
