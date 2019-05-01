@@ -1,38 +1,38 @@
 import { is } from './functions'
 
-const canAppendDecimal = digits => !digits.includes('.')
-const canAppendZero = digits => !is.zero(digits)
+const maxDigits = 15
 
-const appendIf = test => char => str => (test(str) ? `${str}${char}` : str)
+const append = char => str => `${str}${char}`
+const backspace = str => str.slice(0, -1)
 
-const appendZero = appendIf(canAppendZero)('0')
-const appendDecimal = appendIf(canAppendDecimal)('.')
+const isMaxDigits = str => str.length >= maxDigits
+const lessThanMaxDigits = str => !isMaxDigits(str)
+const moreThanOneDigit = str => str.length > 1
+const noDecimals = str => !str.includes('.')
+const notZero = str => !is.zero(str)
 
-// if digits is a single digit when backspacing, return 0. Otherwise remove the
-// last digit.
-const backspaceDigits = digits =>
-  digits.length > 1 ? digits.slice(0, -1) : '0'
+const all = (...tests) => str => tests.every(test => test(str))
 
-const appendToDigits = char => digits => {
-  // don't append a decimal when digits includes a decimal
-  if (is.decimal(char)) return appendDecimal(digits)
-  // don't append a zero when digits is 0
-  if (is.zero(char)) return appendZero(digits)
-  // special case: No leading zeros - When not appending a decimal when digits
-  // is 0, replace with input digit.
-  if (is.zero(digits) && !is.decimal(char)) return char
+const canAppendDecimal = all(lessThanMaxDigits, noDecimals)
+const canAppendZero = all(lessThanMaxDigits, notZero)
 
-  return `${digits}${char}`
+const backspaceOrZero = str => (moreThanOneDigit(str) ? backspace(str) : '0')
+
+const doUpdateDigits = char => str => {
+  if (is.backspace(char)) return backspaceOrZero(str)
+  if (is.decimal(char)) return canAppendDecimal(str) ? append('.')(str) : str
+  if (is.zero(char) && canAppendZero(str)) return append('0')(str)
+  if (is.zero(str) && !is.decimal(char)) return char
+  if (isMaxDigits(str)) return str
+
+  return append(char)(str)
 }
-
-const backspaceOrAppendDigits = char => digits =>
-  is.backspace(char) ? backspaceDigits(digits) : appendToDigits(char)(digits)
 
 // state change functions for 'digits' property
 
-export const updateDigits = digit => state => ({
+export const updateDigits = input => state => ({
   ...state,
-  digits: backspaceOrAppendDigits(digit)(state.digits),
+  digits: doUpdateDigits(input)(state.digits),
 })
 
 export const resetDigits = (init = '0') => state => ({
