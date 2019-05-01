@@ -12,7 +12,7 @@ const EquationScreen = ({ children }) => (
         textOverflow: 'clip',
       }}
     >
-      {children}
+      {children.join(' ')}
     </Screen>
   </Card>
 )

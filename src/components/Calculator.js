@@ -35,17 +35,15 @@ function Calculator() {
   })
 
   const calculateAcc = eq => (eq.length < 3 ? 0 : calculateEquation(eq))
+  // probably unnecessary but with useMemo 'acc' is only recalculated when
+  // state.equation changes and not with every re-render.
   const acc = useMemo(() => calculateAcc(state.equation), [state.equation])
 
   const show = ['OPERATOR', 'EXECUTE'].includes(state.last) ? acc : state.digits
 
   return (
     <main>
-      <Display
-        history={state.history}
-        equation={state.equation.join(' ')}
-        input={show}
-      />
+      <Display history={state.history} equation={state.equation} input={show} />
       <CalculatorDispatch.Provider value={dispatch}>
         <KeyPad />
       </CalculatorDispatch.Provider>
