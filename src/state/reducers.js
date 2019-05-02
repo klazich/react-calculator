@@ -39,7 +39,7 @@ export function postExecReducer(state, action) {
   }
 }
 
-export default function reducer(state, action) {
+export default function calculatorReducer(state, action) {
   if (state.last !== DIGIT && action.type === state.last) {
     return state
   }

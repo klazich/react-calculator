@@ -5,7 +5,7 @@ import Display from './Display'
 
 import { is, substituteKey, calculateEquation } from '../functions/functions'
 import { action } from '../state/actions'
-import reducer from '../state/reducers'
+import calculatorReducer from '../state/reducers'
 import { initialState } from '../state/constants'
 
 export const CalculatorDispatch = createContext(null)
@@ -16,8 +16,13 @@ const logState = reducer => (state, action) => {
   return newState
 }
 
+const reducer =
+  process.env.NODE_ENV === 'development'
+    ? logState(calculatorReducer)
+    : calculatorReducer
+
 function Calculator() {
-  const [state, dispatch] = useReducer(logState(reducer), initialState)
+  const [state, dispatch] = useReducer(reducer, initialState)
 
   // useEffect hook to capture `keydown` events
   useEffect(() => {
