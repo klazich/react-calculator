@@ -9,8 +9,6 @@ function Screen(props) {
 
   return (
     <Text
-      px={2}
-      py={1}
       fontFamily="Iosevka Web"
       fontWeight={400}
       fontSize={1}

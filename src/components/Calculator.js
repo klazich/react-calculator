@@ -44,12 +44,18 @@ function Calculator() {
   // state.equation changes and not with every re-render.
   const acc = useMemo(() => calculateAcc(state.equation), [state.equation])
 
-  const show = ['OPERATOR', 'EXECUTE'].includes(state.last) ? acc : state.digits
+  const show = ['OPERATOR', 'EXECUTE', 'USE_EQUATION'].includes(state.last)
+    ? acc
+    : state.digits
 
   return (
     <main>
-      <Display history={state.history} equation={state.equation} input={show} />
       <CalculatorDispatch.Provider value={dispatch}>
+        <Display
+          history={state.history}
+          equation={state.equation}
+          input={show}
+        />
         <KeyPad />
       </CalculatorDispatch.Provider>
     </main>
