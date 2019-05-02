@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { Flex, Card } from 'rebass'
+import { Flex } from 'rebass'
 
 import Screen from './Screen'
 
@@ -17,9 +17,14 @@ function Row({ children, id }) {
       color="DarkGray"
       onClick={() => dispatch(useEquation(id))}
       css={{
+        cursor: 'pointer',
         height: '26px',
         overflow: 'hidden',
         textOverflow: 'clip',
+        transition: 'color 0.2s ease-in-out',
+        '&:hover': {
+          color: 'DimGray',
+        },
       }}
     >
       {children}
@@ -28,15 +33,13 @@ function Row({ children, id }) {
 }
 
 const HistoryScreen = props => (
-  <Card boxShadow="0 2px 10px rgba(0, 0, 0, 0.2)" bg="#f6f6ff">
-    <Flex flexWrap="wrap">
-      {props.history.map((eq, id) => (
-        <Row key={id} id={id}>
-          {eq.join(' ')}
-        </Row>
-      ))}
-    </Flex>
-  </Card>
+  <Flex flexWrap="wrap">
+    {props.history.map((eq, id) => (
+      <Row key={id} id={id}>
+        {eq.join(' ')}
+      </Row>
+    ))}
+  </Flex>
 )
 
 export default HistoryScreen

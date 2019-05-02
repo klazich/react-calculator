@@ -7,7 +7,9 @@ import HistoryScreen from './HistoryScreen'
 
 const Display = props => (
   <Box>
-    <HistoryScreen history={props.history} />
+    <Card boxShadow="0 2px 10px rgba(0, 0, 0, 0.2)" bg="#f6f6ff">
+      <HistoryScreen history={props.history} />
+    </Card>
     <Card my={2} boxShadow="0 2px 10px rgba(0, 0, 0, 0.2)" bg="#f6f6ff">
       <EquationScreen>{props.equation}</EquationScreen>
       <InputScreen>{props.input}</InputScreen>
