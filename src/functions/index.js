@@ -5,7 +5,7 @@ import {
   calculateEquation,
 } from './functions'
 import { updateDigits, resetDigits } from './digits'
-import { updateEquation, resetEquation } from './equation'
+import { updateEquation, useEquation, resetEquation } from './equation'
 import { updateHistory } from './history'
 
 const pipe = (...fns) => x => fns.reduce((a, f) => f(a), x)
@@ -14,7 +14,7 @@ export const inputDigit = digit => state => pipe(updateDigits(digit))(state)
 
 export const inputDigitPostExec = digit => state =>
   pipe(
-    updateHistory(),
+    // updateHistory(),
     resetEquation(),
     updateDigits(digit)
   )(state)
@@ -28,7 +28,7 @@ export const inputOperator = operator => state =>
 
 export const inputOperatorPostExec = operator => state =>
   pipe(
-    updateHistory(),
+    // updateHistory(),
     resetEquation(),
     updateEquation(calculateEquation(state.equation)),
     updateEquation(operator)
@@ -37,11 +37,18 @@ export const inputOperatorPostExec = operator => state =>
 export const inputExecute = () => state =>
   pipe(
     updateEquation(+state.digits),
+    updateHistory(),
     resetDigits(),
     didJustExecute()
   )(state)
 
 export const inputExecutePostExec = () => state => pipe(didJustExecute())(state)
+
+export const clickEquation = id => state =>
+  pipe(
+    resetDigits(),
+    useEquation(id)
+  )(state)
 
 export const midStateChange = last => state =>
   pipe(

@@ -5,7 +5,7 @@ import Display from './Display'
 
 import { is, substituteKey, calculateEquation } from '../functions/functions'
 import { action } from '../state/actions'
-import reducer from '../state/reducers'
+import calculatorReducer from '../state/reducers'
 import { initialState } from '../state/constants'
 
 export const CalculatorDispatch = createContext(null)
@@ -16,8 +16,13 @@ const logState = reducer => (state, action) => {
   return newState
 }
 
+const reducer =
+  process.env.NODE_ENV === 'development'
+    ? logState(calculatorReducer)
+    : calculatorReducer
+
 function Calculator() {
-  const [state, dispatch] = useReducer(logState(reducer), initialState)
+  const [state, dispatch] = useReducer(reducer, initialState)
 
   // useEffect hook to capture `keydown` events
   useEffect(() => {
@@ -35,18 +40,22 @@ function Calculator() {
   })
 
   const calculateAcc = eq => (eq.length < 3 ? 0 : calculateEquation(eq))
+  // probably unnecessary but with useMemo 'acc' is only recalculated when
+  // state.equation changes and not with every re-render.
   const acc = useMemo(() => calculateAcc(state.equation), [state.equation])
 
-  const show = ['OPERATOR', 'EXECUTE'].includes(state.last) ? acc : state.digits
+  const show = ['OPERATOR', 'EXECUTE', 'USE_EQUATION'].includes(state.last)
+    ? acc
+    : state.digits
 
   return (
     <main>
-      <Display
-        history={state.history}
-        equation={state.equation.join(' ')}
-        input={show}
-      />
       <CalculatorDispatch.Provider value={dispatch}>
+        <Display
+          history={state.history}
+          equation={state.equation}
+          input={show}
+        />
         <KeyPad />
       </CalculatorDispatch.Provider>
     </main>
