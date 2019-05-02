@@ -1,4 +1,4 @@
-import { CLEAR, DIGIT, EXECUTE, OPERATOR } from './constants'
+import { CLEAR, DIGIT, EXECUTE, OPERATOR, USE_EQUATION } from './constants'
 import { is } from '../functions/functions'
 
 export const clear = () => ({
@@ -17,6 +17,11 @@ export const execute = () => ({
 export const operator = operator => ({
   type: OPERATOR,
   operator,
+})
+
+export const useEquation = id => ({
+  type: USE_EQUATION,
+  id,
 })
 
 export const action = key => {

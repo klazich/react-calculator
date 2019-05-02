@@ -1,4 +1,11 @@
-import { CLEAR, DIGIT, EXECUTE, OPERATOR, initialState } from './constants'
+import {
+  CLEAR,
+  DIGIT,
+  EXECUTE,
+  OPERATOR,
+  USE_EQUATION,
+  initialState,
+} from './constants'
 import {
   inputDigit,
   inputDigitPostExec,
@@ -6,6 +13,7 @@ import {
   inputExecutePostExec,
   inputOperator,
   inputOperatorPostExec,
+  clickEquation,
   midStateChange,
 } from '../functions'
 
@@ -17,6 +25,8 @@ export function mainReducer(state, action) {
       return inputOperator(action.operator)(state)
     case EXECUTE:
       return inputExecute()(state)
+    case USE_EQUATION:
+      return clickEquation(action.id)(state)
     case CLEAR:
       return initialState
     default:
@@ -32,6 +42,8 @@ export function postExecReducer(state, action) {
       return inputOperatorPostExec(action.operator)(state)
     case EXECUTE:
       return inputExecutePostExec()(state)
+    case USE_EQUATION:
+      return clickEquation(action.id)(state)
     case CLEAR:
       return initialState
     default:
@@ -40,7 +52,10 @@ export function postExecReducer(state, action) {
 }
 
 export default function calculatorReducer(state, action) {
-  if (state.last !== DIGIT && action.type === state.last) {
+  if (
+    ![DIGIT, USE_EQUATION].includes(state.last) &&
+    action.type === state.last
+  ) {
     return state
   }
 
