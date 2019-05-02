@@ -9,19 +9,13 @@ const isMaxDigits = str => str.length >= maxDigits
 const lessThanMaxDigits = str => !isMaxDigits(str)
 const moreThanOneDigit = str => str.length > 1
 const noDecimals = str => !str.includes('.')
-const notZero = str => !is.zero(str)
 
-const all = (...tests) => str => tests.every(test => test(str))
-
-const canAppendDecimal = all(lessThanMaxDigits, noDecimals)
-const canAppendZero = all(lessThanMaxDigits, notZero)
-
+const canAppendDecimal = str => lessThanMaxDigits(str) && noDecimals(str)
 const backspaceOrZero = str => (moreThanOneDigit(str) ? backspace(str) : '0')
 
 const doUpdateDigits = char => str => {
   if (is.backspace(char)) return backspaceOrZero(str)
   if (is.decimal(char)) return canAppendDecimal(str) ? append('.')(str) : str
-  if (is.zero(char) && canAppendZero(str)) return append('0')(str)
   if (is.zero(str) && !is.decimal(char)) return char
   if (isMaxDigits(str)) return str
 
