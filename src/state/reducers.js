@@ -17,7 +17,7 @@ import {
   midStateChange,
 } from '../functions'
 
-export function mainReducer(state, action) {
+function mainReducer(state, action) {
   switch (action.type) {
     case DIGIT:
       return inputDigit(action.digit)(state)
@@ -34,7 +34,7 @@ export function mainReducer(state, action) {
   }
 }
 
-export function postExecReducer(state, action) {
+function postExecReducer(state, action) {
   switch (action.type) {
     case DIGIT:
       return inputDigitPostExec(action.digit)(state)
@@ -51,13 +51,9 @@ export function postExecReducer(state, action) {
   }
 }
 
-export default function calculatorReducer(state, action) {
-  if (
-    ![DIGIT, USE_EQUATION].includes(state.last) &&
-    action.type === state.last
-  ) {
+export function calculatorReducer(state, action) {
+  if (![DIGIT, USE_EQUATION].includes(state.last) && action.type === state.last)
     return state
-  }
 
   const midState = midStateChange(action.type)(state)
 

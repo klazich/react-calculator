@@ -1,46 +1,42 @@
-// prettier-ignore
-export const keys = [
-  'C', '↤', '÷',
-  '7', '8', '9', '×',
-  '4', '5', '6', '-',
-  '1', '2', '3', '+',
-  '0', '.', '=',
-]
+import { updateDigitsIfCan } from './digits'
+import { updateEquationIfCan } from './equation'
+import { addEquation, getEqFromHistory } from './history'
 
-export const is = {
-  key: k => keys.includes(k),
-  digit: k => /^[0-9↤.]$/.test(k),
-  zero: k => k === '0',
-  backspace: k => k === '↤',
-  decimal: k => k === '.',
-  clear: k => k === 'C',
-  operator: k => /^[÷×+-]$/.test(k),
-  execute: k => k === '=',
-}
+// state change functions for 'digits' property
 
-export const substituteKey = key => {
-  const alt = ['/', '*', 'Escape', 'Backspace', 'Enter']
-  const sub = ['÷', '×', 'C', '↤', '=']
-  return alt.includes(key) ? sub[alt.indexOf(key)] : key
-}
+export const updateDigits = input => state => ({
+  ...state,
+  digits: updateDigitsIfCan(input)(state.digits),
+})
 
-const operations = {
-  '÷': x => y => x / y,
-  '×': x => y => x * y,
-  '+': x => y => x + y,
-  '-': x => y => x - y,
-}
+export const resetDigits = (init = '0') => state => ({
+  ...state,
+  digits: init,
+})
 
-const operatorFunction = operator => operations[operator]
+// state change functions for 'equation' property
 
-const doOperation = ([acc, operator, operand]) =>
-  operatorFunction(operator)(acc)(operand)
+export const updateEquation = input => state => ({
+  ...state,
+  equation: updateEquationIfCan(input)(state.equation),
+})
 
-export const calculateEquation = ([acc, ...equation]) =>
-  equation.reduce(
-    (a, c) => (a.length < 2 ? [...a, c] : [doOperation([...a, c])]),
-    [acc]
-  )[0]
+export const resetEquation = (init = []) => state => ({
+  ...state,
+  equation: init,
+})
+
+// state change functions for 'history' property
+
+export const updateHistory = () => state => ({
+  ...state,
+  history: addEquation(state.equation)(state.history),
+})
+
+export const useEquation = id => state => ({
+  ...state,
+  equation: getEqFromHistory(id)(state.history),
+})
 
 // state change functions for 'didExecute' and 'last' property
 

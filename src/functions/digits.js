@@ -1,35 +1,28 @@
-import { is } from './functions'
+import { is } from './helpers'
 
-const maxDigits = 15
+const maxLength = 15
 
-const append = char => str => `${str}${char}`
+const append = ch => str => `${str}${ch}`
 const backspace = str => str.slice(0, -1)
 
-const isMaxDigits = str => str.length >= maxDigits
-const lessThanMaxDigits = str => !isMaxDigits(str)
-const moreThanOneDigit = str => str.length > 1
-const noDecimals = str => !str.includes('.')
+const appendChar = char => state =>
+  state.length < maxLength ? append(char)(state) : state
 
-const canAppendDecimal = str => lessThanMaxDigits(str) && noDecimals(str)
-const backspaceOrZero = str => (moreThanOneDigit(str) ? backspace(str) : '0')
+const appendNumber = number => state =>
+  state !== '0' ? appendChar(number)(state) : number
 
-const doUpdateDigits = char => str => {
-  if (is.backspace(char)) return backspaceOrZero(str)
-  if (is.decimal(char)) return canAppendDecimal(str) ? append('.')(str) : str
-  if (is.zero(str) && !is.decimal(char)) return char
-  if (isMaxDigits(str)) return str
+const appendZero = () => state =>
+  state !== '0' ? appendChar('0')(state) : state
 
-  return append(char)(str)
+const appendDecimal = () => state =>
+  !state.includes('.') ? appendChar('.')(state) : state
+
+const backspaceState = () => state =>
+  state.length > 1 ? backspace(state) : '0'
+
+export const updateDigitsIfCan = input => {
+  if (is.backspace(input)) return backspaceState()
+  if (is.zero(input)) return appendZero()
+  if (is.decimal(input)) return appendDecimal()
+  return appendNumber(input)
 }
-
-// state change functions for 'digits' property
-
-export const updateDigits = input => state => ({
-  ...state,
-  digits: doUpdateDigits(input)(state.digits),
-})
-
-export const resetDigits = (init = '0') => state => ({
-  ...state,
-  digits: init,
-})

@@ -3,7 +3,7 @@ import { Box, Button, Text } from 'rebass'
 // import PropTypes from 'prop-types'
 
 import { action } from '../../state/actions'
-import { CalculatorDispatch } from '../Calculator'
+import { CalculatorDispatch } from '../context'
 
 /* background: rgba(0, 0, 0, 0.5); */
 /* box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.6); */

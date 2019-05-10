@@ -4,7 +4,7 @@ import { Flex } from 'rebass'
 import Screen from './Screen'
 
 import { useEquation } from '../../state/actions'
-import { CalculatorDispatch } from '../Calculator'
+import { CalculatorDispatch } from '../context'
 
 function Row({ children, id }) {
   const dispatch = useContext(CalculatorDispatch)
