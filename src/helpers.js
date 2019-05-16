@@ -1,4 +1,4 @@
-// prettier-ignore
+/* prettier-ignore */
 export const keys = [
   'C', '↤', '÷',
   '7', '8', '9', '×',
@@ -41,20 +41,3 @@ export const calculateEquation = ([acc, ...equation]) =>
     (a, c) => (a.length < 2 ? [...a, c] : [doOperation([...a, c])]),
     [acc]
   )[0]
-
-// state change functions for 'didExecute' and 'last' property
-
-export const didJustExecute = () => state => ({
-  ...state,
-  didExecute: true,
-})
-
-export const didNotJustExecute = () => state => ({
-  ...state,
-  didExecute: false,
-})
-
-export const updateLast = type => state => ({
-  ...state,
-  last: type,
-})

@@ -4,7 +4,18 @@ import { Flex } from 'rebass'
 import Screen from './Screen'
 
 import { useEquation } from '../../state/actions'
-import { CalculatorDispatch } from '../Calculator'
+import { CalculatorDispatch } from '../context'
+
+const style = {
+  cursor: 'pointer',
+  height: '26px',
+  overflow: 'hidden',
+  textOverflow: 'clip',
+  transition: 'color 0.2s ease-in-out',
+  '&:hover': {
+    color: 'DimGray',
+  },
+}
 
 function Row({ children, id }) {
   const dispatch = useContext(CalculatorDispatch)
@@ -16,16 +27,7 @@ function Row({ children, id }) {
       width={1}
       color="DarkGray"
       onClick={() => dispatch(useEquation(id))}
-      css={{
-        cursor: 'pointer',
-        height: '26px',
-        overflow: 'hidden',
-        textOverflow: 'clip',
-        transition: 'color 0.2s ease-in-out',
-        '&:hover': {
-          color: 'DimGray',
-        },
-      }}
+      css={style}
     >
       {children}
     </Screen>

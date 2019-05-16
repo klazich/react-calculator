@@ -1,6 +1,10 @@
 import React from 'react'
 import { Text } from 'rebass'
 
+const style = {
+  whiteSpace: 'nowrap',
+}
+
 function Screen(props) {
   const { children, size } = props
 
@@ -15,9 +19,7 @@ function Screen(props) {
       textAlign="right"
       bg="#f6f6ff"
       color="DimGrey"
-      css={{
-        whiteSpace: 'nowrap',
-      }}
+      css={style}
       {...props}
     >
       {display}
