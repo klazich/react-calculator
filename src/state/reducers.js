@@ -15,9 +15,9 @@ import {
   inputOperatorPostExec,
   clickEquation,
   midStateChange,
-} from '../functions'
+} from './functions'
 
-function mainReducer(state, action) {
+function normalReducer(state, action) {
   switch (action.type) {
     case DIGIT:
       return inputDigit(action.digit)(state)
@@ -52,12 +52,14 @@ function postExecReducer(state, action) {
 }
 
 export function calculatorReducer(state, action) {
-  if (![DIGIT, USE_EQUATION].includes(state.last) && action.type === state.last)
-    return state
+  const shouldSkip =
+    [OPERATOR, EXECUTE].includes(state.last) && action.type === state.last
+
+  if (shouldSkip) return state
 
   const midState = midStateChange(action.type)(state)
 
   return state.didExecute
     ? postExecReducer(midState, action)
-    : mainReducer(midState, action)
+    : normalReducer(midState, action)
 }

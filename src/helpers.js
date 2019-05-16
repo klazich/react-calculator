@@ -1,4 +1,4 @@
-// prettier-ignore
+/* prettier-ignore */
 export const keys = [
   'C', '↤', '÷',
   '7', '8', '9', '×',

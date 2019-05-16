@@ -1,19 +1,36 @@
-import { calculateEquation } from './helpers'
-import {
-  updateDigits,
-  resetDigits,
-  updateEquation,
-  useEquation,
-  resetEquation,
-  updateHistory,
-  didJustExecute,
-  didNotJustExecute,
-  updateLast,
-} from './functions'
+import { updateHistory, useEquation } from './history'
+import { updateDigits, resetDigits } from './digits'
+import { updateEquation, resetEquation } from './equation'
+import { calculateEquation } from '../../helpers'
+
+/**
+ * Functions for updating or resetting the 'didExecute' and 'last'
+ * state property.
+ */
+
+export const didJustExecute = () => state => ({
+  ...state,
+  didExecute: true,
+})
+
+export const didNotJustExecute = () => state => ({
+  ...state,
+  didExecute: false,
+})
+
+export const updateLast = type => state => ({
+  ...state,
+  last: type,
+})
+
+/**
+ * How the calculator handles state changes for different inputs.
+ */
 
 const pipe = (...fns) => x => fns.reduce((a, f) => f(a), x)
 
-// input digit or backspace
+// Instructions for digit, decimal or backspace calculator inputs.
+// ↤, ., 0, 1, 2, 3, 4, 5, 6, 7, 8, 9
 
 export const inputDigit = digit => state => pipe(updateDigits(digit))(state)
 
@@ -23,7 +40,8 @@ export const inputDigitPostExec = digit => state =>
     updateDigits(digit)
   )(state)
 
-// input operator
+// Instructions for operator calculator inputs.
+// ÷, ×, -, +
 
 export const inputOperator = operator => state =>
   pipe(
@@ -39,7 +57,8 @@ export const inputOperatorPostExec = operator => state =>
     updateEquation(operator)
   )(state)
 
-// input equal (exec)
+// Instructions for equal calculator input.
+// =
 
 export const inputExecute = () => state =>
   pipe(
@@ -51,7 +70,7 @@ export const inputExecute = () => state =>
 
 export const inputExecutePostExec = () => state => pipe(didJustExecute())(state)
 
-// click history equation
+// Instructions when an equation is clicked in the history pane.
 
 export const clickEquation = id => state =>
   pipe(

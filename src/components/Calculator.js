@@ -3,7 +3,7 @@ import React, { useEffect, useReducer, useMemo } from 'react'
 import KeyPad from './KeyPad'
 import Display from './Display'
 
-import { is, substituteKey, calculateEquation } from '../functions/helpers'
+import { is, substituteKey, calculateEquation } from '../helpers'
 import { action } from '../state/actions'
 import { initialState } from '../state/constants'
 import { calculatorReducer } from '../state/reducers'
