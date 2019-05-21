@@ -2,7 +2,6 @@ import { updateHistory, useEquation } from './history'
 import { updateDigits, resetDigits } from './digits'
 import { updateEquation, resetEquation } from './equation'
 import { calculateEquation } from '../../helpers'
-import { type } from 'os'
 
 /**
  * Functions for updating or resetting the 'didExecute' and 'last'
