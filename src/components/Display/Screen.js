@@ -1,15 +1,16 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { Text } from 'rebass'
-
-const style = {
-  whiteSpace: 'nowrap',
-}
 
 function Screen(props) {
   const { children, size } = props
 
   const numDigitsToDisplay = size || Infinity
   const display = `${children}`.slice(0, numDigitsToDisplay)
+
+  const style = {
+    whiteSpace: 'nowrap',
+  }
 
   return (
     <Text
@@ -25,6 +26,12 @@ function Screen(props) {
       {display}
     </Text>
   )
+}
+
+Screen.propTypes = {
+  children: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+    .isRequired,
+  size: PropTypes.number,
 }
 
 export default Screen

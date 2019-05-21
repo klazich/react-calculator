@@ -1,47 +1,25 @@
-import React, { useContext } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 import { Flex } from 'rebass'
 
-import Screen from './Screen'
+import Row from './Row'
 
-import { useEquation } from '../../state/actions'
-import { CalculatorDispatch } from '../context'
-
-const style = {
-  cursor: 'pointer',
-  height: '26px',
-  overflow: 'hidden',
-  textOverflow: 'clip',
-  transition: 'color 0.2s ease-in-out',
-  '&:hover': {
-    color: 'DimGray',
-  },
-}
-
-function Row({ children, id }) {
-  const dispatch = useContext(CalculatorDispatch)
-
+function HistoryScreen(props) {
   return (
-    <Screen
-      px={2}
-      py={1}
-      width={1}
-      color="DarkGray"
-      onClick={() => dispatch(useEquation(id))}
-      css={style}
-    >
-      {children}
-    </Screen>
+    <Flex flexWrap="wrap">
+      {props.history.map((eq, id) => (
+        <Row key={id} id={id}>
+          {eq.join(' ')}
+        </Row>
+      ))}
+    </Flex>
   )
 }
 
-const HistoryScreen = props => (
-  <Flex flexWrap="wrap">
-    {props.history.map((eq, id) => (
-      <Row key={id} id={id}>
-        {eq.join(' ')}
-      </Row>
-    ))}
-  </Flex>
-)
+HistoryScreen.propTypes = {
+  history: PropTypes.arrayOf(
+    PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.number, PropTypes.string]))
+  ),
+}
 
 export default HistoryScreen

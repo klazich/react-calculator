@@ -9,29 +9,17 @@ import { initialState } from '../state/constants'
 import { calculatorReducer } from '../state/reducers'
 import { CalculatorDispatch } from './context'
 
-const logState = reducer => (state, action) => {
-  const newState = reducer(state, action)
-  console.log(newState)
-  return newState
-}
-
-const reducer =
-  process.env.NODE_ENV === 'development'
-    ? logState(calculatorReducer)
-    : calculatorReducer
-
 function Calculator() {
-  const [state, dispatch] = useReducer(reducer, initialState)
+  const [state, dispatch] = useReducer(calculatorReducer, initialState)
+
+  const onKeyDown = event => {
+    event.preventDefault()
+    const key = substituteKey(event.key)
+    if (is.key(key)) dispatch(action(key))
+  }
 
   // useEffect hook to capture `keydown` events
   useEffect(() => {
-    const onKeyDown = event => {
-      event.preventDefault()
-
-      const key = substituteKey(event.key)
-      if (is.key(key)) dispatch(action(key))
-    }
-
     document.addEventListener('keydown', onKeyDown, false)
     return () => {
       document.removeEventListener('keydown', onKeyDown, false)
@@ -42,7 +30,6 @@ function Calculator() {
   // state.equation changes and not with every re-render.
   const calculateAcc = eq => (eq.length < 3 ? 0 : calculateEquation(eq))
   const acc = useMemo(() => calculateAcc(state.equation), [state.equation])
-
   const show = ['OPERATOR', 'EXECUTE', 'USE_EQUATION'].includes(state.last)
     ? acc
     : state.digits
