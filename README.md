@@ -1,3 +1,5 @@
+<!-- markdownlint-disable MD033 -->
+
 # react-calculator
 
 A simple calculator web app built with [React](https://reactjs.org/) and styled using [Rebass](https://rebassjs.org/).
@@ -18,18 +20,21 @@ calculator.
 
 - It should have the 4 basic operations:
 
-  - Division (`÷`)
-  - Multiplication (`×`)
-  - Addition (`+`)
-  - Subtraction (`-`)
+  - Division <kbd>÷</kbd>
+  - Multiplication <kbd>×</kbd>
+  - Addition <kbd>+</kbd>
+  - Subtraction <kbd>-</kbd>
 
 - It should use _immediate execution logic_ instead of _formula/expression
   logic_.
 
   - Immediate Execution Logic:
-    > `3 + 5 x 6 - 2 / 4 = 11.5`
+    > `3 + 5 × 6 - 2 ÷ 4 = 11.5`
   - Formula/Expression Logic:
-    > `3 + 5 x 6 - 2 / 4 = 32.5`
+    > `3 + 5 × 6 - 2 ÷ 4 = 32.5`
 
 - If and operator key is pressed after a value is computed, then the computed
   value should be continued.
+  - Example:
+    > _pressing_ <kbd>2</kbd> <kbd>+</kbd> <kbd>3</kbd> <kbd>=</kbd> <kbd>+</kbd> <kbd>4</kbd> <kbd>=</kbd> &rarr; `9`  _is equivalent to pressing_
+    > <kbd>2</kbd> <kbd>+</kbd> <kbd>3</kbd> <kbd>+</kbd> <kbd>4</kbd> <kbd>=</kbd> &rarr; `9`
