@@ -1,4 +1,5 @@
 import React from 'react'
+// import PropTypes from 'prop-types'
 import { Flex, Card } from 'rebass'
 
 import Key from './Key'
