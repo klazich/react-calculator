@@ -10,7 +10,7 @@ function InputScreen({ children }) {
   }
 
   return (
-    <Screen px={2} pb={1} fontWeight={600} fontSize={5} size={15} css={style}>
+    <Screen px={2} pb={1} fontWeight={600} fontSize={5} css={style}>
       {children}
     </Screen>
   )

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import Screen from './Screen'
 
-import { useEquation } from '../../state/actions'
+import { equation } from '../../state/actions'
 import { CalculatorDispatch } from '../context'
 
 function Row({ children, id }) {
@@ -26,7 +26,7 @@ function Row({ children, id }) {
       py={1}
       width={1}
       color="DarkGray"
-      onClick={() => dispatch(useEquation(id))}
+      onClick={() => dispatch(equation(id))}
       css={style}
     >
       {children}
