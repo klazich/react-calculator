@@ -29,11 +29,13 @@ calculator.
   logic_.
 
   - Immediate Execution Logic:
-    > `3 + 5 × 6 - 2 ÷ 4` **&rarr;** `(((3 + 5) * 6) - 2) / 4 = 11.5`
+    > `3 + 5 × 6 - 2 ÷ 4` **&rarr;** `(((3 + 5) * 6) - 2) / 4` = 11.5
   - Formula/Expression Logic:
-    > `3 + 5 × 6 - 2 ÷ 4` **&rarr;** `3 + (5 * 6) - (2 / 4) = 32.5`
+    > `3 + 5 × 6 - 2 ÷ 4` **&rarr;** `3 + (5 * 6) - (2 / 4)` = 32.5
 
 - If and operator key is pressed after a value is computed, then the computed
   value should be continued.
   - Example:
     > _pressing_ <kbd>2</kbd> <kbd>+</kbd> <kbd>3</kbd> <kbd>=</kbd> <kbd>+</kbd> <kbd>4</kbd> <kbd>=</kbd> **&rarr;** `9`  _is equivalent to pressing_ <kbd>2</kbd> <kbd>+</kbd> <kbd>3</kbd> <kbd>+</kbd> <kbd>4</kbd> <kbd>=</kbd> **&rarr;** `9`
+
+## Computing Values
