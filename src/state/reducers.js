@@ -16,7 +16,6 @@ import {
   clickEquation,
   midStateChange,
 } from './functions'
-import { logState } from '../helpers'
 
 function normalReducer(state, action) {
   switch (action.type) {
@@ -52,7 +51,7 @@ function postExecReducer(state, action) {
   }
 }
 
-export function reducer(state, action) {
+export function calculatorReducer(state, action) {
   const shouldSkip =
     [OPERATOR, EXECUTE].includes(state.last) && action.type === state.last
 
@@ -64,6 +63,3 @@ export function reducer(state, action) {
     ? postExecReducer(midState, action)
     : normalReducer(midState, action)
 }
-
-export const calculatorReducer =
-  process.env.NODE_ENV === 'development' ? logState(reducer) : reducer
