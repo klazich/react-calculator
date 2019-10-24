@@ -9,25 +9,23 @@ import { CalculatorDispatch } from '../context'
 function Row({ children, id }) {
   const dispatch = useContext(CalculatorDispatch)
 
-  const style = {
-    cursor: 'pointer',
-    height: '26px',
-    overflow: 'hidden',
-    textOverflow: 'clip',
-    transition: 'color 0.2s ease-in-out',
-    '&:hover': {
-      color: 'DimGray',
-    },
-  }
-
   return (
     <Screen
+      sx={{
+        cursor: 'pointer',
+        height: '26px',
+        overflow: 'hidden',
+        textOverflow: 'clip',
+        transition: 'color 0.2s ease-in-out',
+        '&:hover': {
+          color: 'DimGray',
+        },
+      }}
       px={2}
       py={1}
       width={1}
       color="DarkGray"
       onClick={() => dispatch(equation(id))}
-      css={style}
     >
       {children}
     </Screen>
