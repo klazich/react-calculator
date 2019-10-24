@@ -66,4 +66,5 @@ export function reducer(state, action) {
 }
 
 export const calculatorReducer =
+  // eslint-disable-next-line no-undef
   process.env.NODE_ENV === 'development' ? logState(reducer) : reducer
