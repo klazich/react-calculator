@@ -10,35 +10,31 @@
     "format": "prettier --write \"src/**/*.{js,jsx,json,css,md}\"",
     "format-root": "prettier --write \"./*.{js,jsx,json,css,md}\"",
     "start": "npm run develop",
-    "serve": "gatsby serve"
+    "serve": "gatsby serve",
+    "test": "jest",
+    "test-watch": "jest --watch"
   },
   "dependencies": {
-    "@emotion/core": "^10.0.22",
-    "@emotion/styled": "^10.0.22",
-    "@mdx-js/react": "^1.5.1",
-    "@rebass/preset": "^4.0.5",
-    "emotion-theming": "^10.0.19",
+    "babel-plugin-styled-components": "^1.10.6",
     "gatsby": "^2.17.2",
-    "gatsby-plugin-emotion": "^4.1.12",
-    "gatsby-plugin-theme-ui": "^0.2.43",
+    "gatsby-plugin-flow": "^1.1.12",
+    "gatsby-plugin-styled-components": "^3.1.11",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "rebass": "^4.0.6",
-    "theme-ui": "^0.2.44"
+    "styled-components": "^4.4.0"
   },
   "devDependencies": {
-    "babel-eslint": "^10.0.3",
+    "babel-jest": "^24.9.0",
     "babel-preset-gatsby": "^0.2.20",
-    "eslint": "^6.5.1",
-    "eslint-loader": "^3.0.2",
-    "eslint-plugin-import": "^2.18.2",
-    "eslint-plugin-react": "^7.16.0",
     "esm": "^3.2.20",
-    "gatsby-plugin-eslint": "^2.0.5",
     "husky": "^3.0.9",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^24.9.0",
     "lint-staged": "^9.4.2",
     "prettier": "^1.18.2",
-    "prop-types": "^15.7.2"
+    "prop-types": "^15.7.2",
+    "react-test-renderer": "^16.11.0"
   },
   "repository": {
     "type": "git",

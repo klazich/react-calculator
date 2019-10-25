@@ -44,7 +44,6 @@ export const calculateEquation = ([acc, ...equation]) =>
 
 export const logState = reducer => (state, action) => {
   const newState = reducer(state, action)
-  // eslint-disable-next-line no-undef
   console.log(newState)
   return newState
 }

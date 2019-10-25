@@ -19,7 +19,7 @@ export const operator = operator => ({
   operator,
 })
 
-export const equation = id => ({
+export const useEquation = id => ({
   type: USE_EQUATION,
   id,
 })
