@@ -6,19 +6,21 @@ import InputScreen from './InputScreen'
 import EquationScreen from './EquationScreen'
 import HistoryScreen from './HistoryScreen'
 
-function Display(props) {
-  return (
-    <Box>
-      <Card boxShadow="0 2px 10px rgba(0, 0, 0, 0.2)" bg="#f6f6ff">
-        <HistoryScreen history={props.history} />
-      </Card>
-      <Card my={2} boxShadow="0 2px 10px rgba(0, 0, 0, 0.2)" bg="#f6f6ff">
-        <EquationScreen>{props.equation}</EquationScreen>
-        <InputScreen>{props.input}</InputScreen>
-      </Card>
-    </Box>
-  )
-}
+const Display = props => (
+  <Box p={0}>
+    <Card>
+      <HistoryScreen history={props.history} />
+    </Card>
+    <Card
+      sx={{
+        my: 2,
+      }}
+    >
+      <EquationScreen>{props.equation}</EquationScreen>
+      <InputScreen>{props.input}</InputScreen>
+    </Card>
+  </Box>
+)
 
 Display.propTypes = {
   history: PropTypes.arrayOf(
