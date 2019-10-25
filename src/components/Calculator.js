@@ -20,10 +20,8 @@ function Calculator() {
 
   // useEffect hook to capture `keydown` events
   useEffect(() => {
-    // eslint-disable-next-line no-undef
     document.addEventListener('keydown', onKeyDown, false)
     return () => {
-      // eslint-disable-next-line no-undef
       document.removeEventListener('keydown', onKeyDown, false)
     }
   })

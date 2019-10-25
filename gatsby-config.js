@@ -1,7 +1,10 @@
 module.exports = {
   plugins: [
-    'gatsby-plugin-emotion',
-    'gatsby-plugin-theme-ui',
-    'gatsby-plugin-eslint',
+    {
+      resolve: `gatsby-plugin-styled-components`,
+      options: {
+        // Add any options here
+      },
+    },
   ],
 }
