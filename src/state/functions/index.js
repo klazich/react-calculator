@@ -31,10 +31,7 @@ const pipe = (...fns) => x => fns.reduce((a, f) => f(a), x)
 
 // Instructions for digit, decimal or backspace calculator inputs (↤, ., 0, 1, 2, 3, 4, 5, 6, 7, 8, 9).
 
-export const inputDigit = digit => state =>
-  pipe(
-    updateDigits(digit)
-  )(state)
+export const inputDigit = digit => state => pipe(updateDigits(digit))(state)
 
 export const inputDigitPostExec = digit => state =>
   pipe(

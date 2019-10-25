@@ -3,19 +3,20 @@ import PropTypes from 'prop-types'
 
 import Screen from './Screen'
 
-function EquationScreen({ children }) {
-  const style = {
-    height: '22px',
-    overflow: 'hidden',
-    textOverflow: 'clip',
-  }
-
-  return (
-    <Screen px={2} pt={1} color="Silver" css={style}>
-      {children.join(' ')}
-    </Screen>
-  )
-}
+const EquationScreen = ({ children }) => (
+  <Screen
+    sx={{
+      height: '22px',
+      overflow: 'hidden',
+      textOverflow: 'clip',
+    }}
+    px={2}
+    pt={1}
+    color="Silver"
+  >
+    {children.join(' ')}
+  </Screen>
+)
 
 EquationScreen.propTypes = {
   children: PropTypes.arrayOf(

@@ -4,17 +4,15 @@ import { Flex } from 'rebass'
 
 import Row from './Row'
 
-function HistoryScreen(props) {
-  return (
-    <Flex flexWrap="wrap">
-      {props.history.map((eq, id) => (
-        <Row key={id} id={id}>
-          {eq.join(' ')}
-        </Row>
-      ))}
-    </Flex>
-  )
-}
+const HistoryScreen = props => (
+  <Flex flexWrap="wrap">
+    {props.history.map((eq, id) => (
+      <Row key={id} id={id}>
+        {eq.join(' ')}
+      </Row>
+    ))}
+  </Flex>
+)
 
 HistoryScreen.propTypes = {
   history: PropTypes.arrayOf(
