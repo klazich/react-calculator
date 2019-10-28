@@ -1,4 +1,4 @@
-import { CLEAR, DIGIT, EXECUTE, OPERATOR, USE_EQUATION } from './constants'
+import { CLEAR, DIGIT, EXECUTE, OPERATOR, GET_EQUATION } from './constants'
 import { is } from '../helpers'
 
 export const clear = () => ({
@@ -20,7 +20,7 @@ export const operator = operator => ({
 })
 
 export const equation = id => ({
-  type: USE_EQUATION,
+  type: GET_EQUATION,
   id,
 })
 

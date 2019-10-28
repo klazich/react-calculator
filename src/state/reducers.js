@@ -3,7 +3,7 @@ import {
   DIGIT,
   EXECUTE,
   OPERATOR,
-  USE_EQUATION,
+  GET_EQUATION,
   initialState,
 } from './constants'
 import {
@@ -26,7 +26,7 @@ function normalReducer(state, action) {
       return inputOperator(action.operator)(state)
     case EXECUTE:
       return inputExecute()(state)
-    case USE_EQUATION:
+    case GET_EQUATION:
       return clickEquation(action.id)(state)
     case CLEAR:
       return initialState
@@ -43,7 +43,7 @@ function postExecReducer(state, action) {
       return inputOperatorPostExec(action.operator)(state)
     case EXECUTE:
       return inputExecutePostExec()(state)
-    case USE_EQUATION:
+    case GET_EQUATION:
       return clickEquation(action.id)(state)
     case CLEAR:
       return initialState

@@ -32,7 +32,7 @@ function Calculator() {
   // state.equation changes and not with every re-render.
   const calculateAcc = eq => (eq.length < 3 ? 0 : calculateEquation(eq))
   const acc = useMemo(() => calculateAcc(state.equation), [state.equation])
-  const show = ['OPERATOR', 'EXECUTE', 'USE_EQUATION'].includes(state.last)
+  const show = ['OPERATOR', 'EXECUTE', 'GET_EQUATION'].includes(state.last)
     ? acc
     : state.digits
 
