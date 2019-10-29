@@ -6,7 +6,7 @@ import Display from './Display'
 import { is, substituteKey, calculateEquation } from '../helpers'
 import { action } from '../state/actions'
 import { initialState } from '../state/constants'
-import { calculatorReducer } from '../state/reducers'
+import { calculatorReducer } from '../state/reducer'
 import { CalculatorDispatch } from './context'
 
 function Calculator() {
