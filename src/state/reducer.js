@@ -12,7 +12,6 @@ import {
   inputOperator,
   clickEquation,
 } from './functions'
-import { logState } from '../helpers'
 
 function normalReducer(state, action) {
   switch (action.type) {
@@ -41,6 +40,13 @@ export function reducer(state, action) {
     ...normalReducer(state, action),
     last: action.type,
   }
+}
+
+const logState = reducer => (state, action) => {
+  const newState = reducer(state, action)
+  // eslint-disable-next-line no-undef
+  console.log(newState)
+  return newState
 }
 
 export const calculatorReducer =
