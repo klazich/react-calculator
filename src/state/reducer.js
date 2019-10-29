@@ -30,17 +30,13 @@ function normalReducer(state, action) {
   }
 }
 
-export function reducer(state, action) {
-  const shouldSkip =
-    [OPERATOR, EXECUTE].includes(state.last) && action.type === state.last
-
-  if (shouldSkip) return state
-
-  return {
-    ...normalReducer(state, action),
-    last: action.type,
-  }
-}
+const reducer = (state, action) =>
+  state.last === EXECUTE && action.type === EXECUTE
+    ? state
+    : {
+        ...normalReducer(state, action),
+        last: action.type,
+      }
 
 const logState = reducer => (state, action) => {
   const newState = reducer(state, action)
