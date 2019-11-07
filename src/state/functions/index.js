@@ -35,7 +35,7 @@ export const inputDigit = digit => state =>
 export const inputOperator = operator => state =>
   !state.didExecute
     ? pipe(
-        updateEquation(+state.digits),
+        updateEquation(Number(state.digits)),
         updateEquation(operator),
         resetDigits()
       )(state)
@@ -51,7 +51,7 @@ export const inputOperator = operator => state =>
 export const inputExecute = () => state =>
   !state.didExecute
     ? pipe(
-        updateEquation(+state.digits),
+        updateEquation(Number(state.digits)),
         updateHistory(),
         resetDigits(),
         didJustExecute()
