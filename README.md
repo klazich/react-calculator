@@ -9,7 +9,8 @@ A simple calculator web app built with [React](https://reactjs.org/) and styled 
 - ES2018 syntax with [BabelJS](https://babeljs.io/)
 - [GatsbyJS](https://rebassjs.org/) powered by [ReactJS](https://reactjs.org/)
 - Styled with [Rebass](https://rebassjs.org/), React primitive UI components built with styled-system
-- [JestJS](https://jestjs.io/) for unit testing
+  - using [Emotion](https://emotion.sh/docs/introduction) and [Theme UI](https://theme-ui.com/).
+- ~~[JestJS](https://jestjs.io/) for unit testing~~
 - Code formatting with [Prettier](https://prettier.io/)
 - A Redux style of state management
 
