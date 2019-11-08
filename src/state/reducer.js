@@ -31,7 +31,7 @@ function normalReducer(state, action) {
 }
 
 const reducer = (state, action) =>
-  state.last === EXECUTE && action.type === EXECUTE
+  [OPERATOR, EXECUTE].includes(state.last) && action.type === state.last
     ? state
     : {
         ...normalReducer(state, action),
