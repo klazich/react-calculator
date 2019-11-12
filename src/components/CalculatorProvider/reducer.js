@@ -64,6 +64,7 @@ const handleBackInput = () => state => {
   return {
     ...state,
     acc: {
+      ...acc,
       on: acc.on === 'fraction' && acc.fraction === '' ? 'integer' : acc.on,
       [acc.on]: acc[acc.on].slice(0, -1),
     },

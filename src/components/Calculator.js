@@ -6,7 +6,10 @@ import Display from './Display'
 import { is, substituteKey } from '../helpers'
 
 function Calculator() {
-  const { dispatch } = useContext(CalculatorContext)
+  const { state, dispatch } = useContext(CalculatorContext)
+
+  // eslint-disable-next-line no-undef
+  console.log(state)
 
   const onKeyDown = event => {
     event.preventDefault()
