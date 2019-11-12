@@ -1,5 +1,4 @@
 import React, { useContext } from 'react'
-import PropTypes from 'prop-types'
 import { Box, Card } from 'rebass'
 
 import { CalculatorContext } from '../CalculatorProvider'
@@ -24,16 +23,6 @@ const Display = () => {
       </Card>
     </Box>
   )
-}
-
-Display.propTypes = {
-  history: PropTypes.arrayOf(
-    PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.number, PropTypes.string]))
-  ),
-  equation: PropTypes.arrayOf(
-    PropTypes.oneOfType([PropTypes.number, PropTypes.string])
-  ).isRequired,
-  input: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
 }
 
 export default Display
