@@ -14,16 +14,6 @@ export const type = {
   CLEAR: 'CLEAR',
 }
 
-export const action = value => {
-  if (/[0-9]/.test(value)) return { type: type.NUMBER, payload: { value } }
-  if (value === '.') return { type: type.DECIMAL }
-  if (value === '↤') return { type: type.BACK }
-  if (/[÷×+-]/.test(value)) return { type: type.OPERATOR, payload: { value } }
-  if (value === '=') return { type: type.EXECUTE }
-  if (value === 'C') return { type: type.CLEAR }
-  return { type: null }
-}
-
 export const initialState = {
   acc: {
     on: 'integer',
@@ -36,78 +26,87 @@ export const initialState = {
 }
 
 const handleNumberInput = ({ value }) => state => {
-  const { acc } = state
+  const { acc, expression } = state
+  const nextAcc = { ...acc, [acc.on]: `${acc[acc.on]}${value}` }
   return {
     ...state,
-    acc: {
-      ...acc,
-      [acc.on]: `${acc[acc.on]}${value}`,
-    },
+    acc: nextAcc,
+    expression:
+      expression.length % 2 === 0
+        ? [...expression, accToValue(nextAcc)]
+        : [...expression.slice(0, -1), accToValue(nextAcc)],
     result: null,
   }
 }
 
 const handleDecimalInput = () => state => {
-  const { acc } = state
+  const { acc, expression } = state
+  const nextAcc = { ...acc, on: 'fraction' }
   return {
     ...state,
-    acc: {
-      ...acc,
-      on: 'fraction',
-    },
+    acc: nextAcc,
+    expression:
+      expression.length % 2 === 0
+        ? [...expression, accToValue(nextAcc)]
+        : [...expression.slice(0, -1), accToValue(nextAcc)],
     result: null,
   }
 }
 
 const handleBackInput = () => state => {
-  const { acc } = state
+  const { acc, expression } = state
+  const nextAcc = {
+    ...acc,
+    on: acc.on === 'fraction' && acc.fraction === '' ? 'integer' : acc.on,
+    [acc.on]: acc[acc.on].slice(0, -1),
+  }
   return {
     ...state,
-    acc: {
-      ...acc,
-      on: acc.on === 'fraction' && acc.fraction === '' ? 'integer' : acc.on,
-      [acc.on]: acc[acc.on].slice(0, -1),
-    },
+    acc: nextAcc,
+    expression:
+      expression.length % 2 === 0
+        ? [...expression, accToValue(nextAcc)]
+        : [...expression.slice(0, -1), accToValue(nextAcc)],
     result: null,
   }
 }
 
 const handleOperatorInput = ({ value }) => state => {
-  const { acc, expression, result } = state
+  const { expression } = state
   return {
     ...state,
-    acc: expression.length % 2 === 0 ? initialState.acc : acc,
+    acc: initialState.acc,
     expression:
-      expression.length % 2 === 0
-        ? [...expression, result || accToValue(acc), value]
-        : [...expression.slice(0, -1), value],
+      expression.length % 2 !== 0 ? [...expression, value] : expression,
     result: null,
   }
 }
 
 const handleExecuteInput = () => state => {
-  const { acc, expression, expHistory, result } = state
-  return {
-    ...state,
-    acc: initialState.acc,
-    expression: initialState.expression,
-    expHistory: [...expHistory.slice(1), expression],
-    result: evaluateExpression([...expression, result || accToValue(acc)]),
-  }
+  const { expression, expHistory } = state
+  return expression.length === 0
+    ? state
+    : {
+        ...state,
+        acc: initialState.acc,
+        expression: [evaluateExpression(expression)],
+        expHistory: [...expHistory.slice(1), expression],
+        result: evaluateExpression(expression),
+      }
 }
 
 const handleClickEquationInput = ({ value }) => state => {
   const { expHistory } = state
-  const newExpression = getExpressionFromHistory(value, expHistory)
+  const nextExpression = getExpressionFromHistory(value, expHistory)
   return {
     ...state,
     acc: initialState.acc,
-    expression: newExpression,
-    result: evaluateExpression(newExpression),
+    expression: nextExpression,
+    result: evaluateExpression(nextExpression),
   }
 }
 
-export const reducer = (state, action) => {
+const reducer = (state, action) => {
   switch (action.type) {
     case type.NUMBER:
       return handleNumberInput(action.payload)(state)
@@ -127,3 +126,16 @@ export const reducer = (state, action) => {
       return state
   }
 }
+
+const logState = reducer => (state, action) => {
+  const nextState = reducer(state, action)
+  // eslint-disable-next-line no-undef
+  console.log(action.type)
+  // eslint-disable-next-line no-undef
+  console.log(nextState)
+  return nextState
+}
+
+export const calculatorReducer =
+  // eslint-disable-next-line no-undef
+  process.env.NODE_ENV === 'development' ? logState(reducer) : reducer

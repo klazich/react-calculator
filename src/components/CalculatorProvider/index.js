@@ -1,15 +1,16 @@
 import React, { createContext, useReducer } from 'react'
 import PropTypes from 'prop-types'
 
-import { reducer, initialState } from './reducer'
+import { calculatorReducer, initialState } from './reducer'
 import { accToString } from './helpers'
 
-export { action, type } from './reducer'
+export { type } from './reducer'
+export { action } from './helpers'
 
 export const CalculatorContext = createContext()
 
 export const CalculatorProvider = props => {
-  const [state, dispatch] = useReducer(reducer, initialState)
+  const [state, dispatch] = useReducer(calculatorReducer, initialState)
   const { acc, result } = state
 
   const display = result || accToString(acc)
