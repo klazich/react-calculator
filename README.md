@@ -12,7 +12,7 @@ A simple calculator web app built with [React](https://reactjs.org/) and styled 
   - using [Emotion](https://emotion.sh/docs/introduction) and [Theme UI](https://theme-ui.com/).
 - ~~[JestJS](https://jestjs.io/) for unit testing~~
 - Code formatting with [Prettier](https://prettier.io/)
-- A Redux style of state management
+- State management with React [hooks](https://reactjs.org/docs/hooks-intro.html) and [context](https://reactjs.org/docs/context.html)
 
 ## Philosophy
 
