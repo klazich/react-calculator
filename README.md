@@ -26,8 +26,7 @@ calculator.
   - Addition <kbd>+</kbd>
   - Subtraction <kbd>-</kbd>
 
-- It should use _immediate execution logic_ instead of _formula/expression
-  logic_.
+- It should use ~~_immediate execution logic_~~ _formula/expression logic_.
 
   - Immediate Execution Logic:
     > `3 + 5 × 6 - 2 ÷ 4` **&rarr;** `(((3 + 5) * 6) - 2) / 4` = `11`
