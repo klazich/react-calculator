@@ -17,13 +17,13 @@ const Container = props => (
 )
 
 const main = () => (
-  <CalculatorProvider>
-    <Container>
-      <Box mx="auto" width={256}>
+  <Container>
+    <Box mx="auto" width={256}>
+      <CalculatorProvider>
         <Calculator />
-      </Box>
-    </Container>
-  </CalculatorProvider>
+      </CalculatorProvider>
+    </Box>
+  </Container>
 )
 
 export default main
