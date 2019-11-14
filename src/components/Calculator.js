@@ -3,15 +3,21 @@ import React, { useEffect, useContext } from 'react'
 import { CalculatorContext, action } from './CalculatorProvider'
 import KeyPad from './KeyPad'
 import Display from './Display'
-import { is, substituteKey } from '../helpers'
 
 function Calculator() {
   const { dispatch } = useContext(CalculatorContext)
 
   const onKeyDown = event => {
     event.preventDefault()
-    const key = substituteKey(event.key)
-    if (is.key(key)) dispatch(action(key))
+    const value =
+      {
+        '/': '÷',
+        '*': '×',
+        Escape: 'C',
+        Backspace: '↤',
+        Enter: '=',
+      }[event.key] || event.key
+    if (/^[0-9C↤.=÷×+-]$/.test(`${value}`)) dispatch(action(value))
   }
 
   // useEffect hook to capture `keydown` events

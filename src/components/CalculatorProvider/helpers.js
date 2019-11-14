@@ -8,8 +8,6 @@ export const accToString = ({ on, integer, fraction }) => {
   else return `${Number(integer || 0)}`
 }
 
-export const getExpressionFromHistory = (id, expHistory) => expHistory[id]
-
 const opsFunction = op =>
   ({
     '÷': x => y => x / y,
@@ -21,12 +19,16 @@ const opsFunction = op =>
 const evaluateOperation = (operand1, operator, operand2) =>
   opsFunction(operator)(operand1)(operand2)
 
-export const evaluateExpression = expression => {
-  if (expression.length === 0) return 0
+export const evaluateExpression = arr => {
+  if (arr.length === 0) return 0
+
+  const expression = arr.length % 2 !== 0 ? arr : arr.slice(0, -1)
   if (expression.length === 1) return expression[0]
+
   const highPrecedence = expression.findIndex(v => /^[×÷]$/.test(v))
   const lowPrecedence = expression.findIndex(v => /^[+-]$/.test(v))
   const id = highPrecedence > 0 ? highPrecedence : lowPrecedence
+
   return evaluateExpression([
     ...expression.slice(0, id - 1),
     evaluateOperation(...expression.slice(id - 1, id + 2)),

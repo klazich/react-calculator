@@ -2,7 +2,15 @@ import React from 'react'
 import { Flex, Card } from 'rebass'
 
 import Key from './Key'
-import { keys } from '../../helpers'
+
+/* prettier-ignore */
+export const keys = [
+  'C', '↤', '÷',
+  '7', '8', '9', '×',
+  '4', '5', '6', '-',
+  '1', '2', '3', '+',
+  '0', '.', '=',
+]
 
 const isWideKey = k => ['=', '↤'].includes(k)
 
