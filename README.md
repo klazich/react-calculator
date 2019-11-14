@@ -6,36 +6,47 @@ A simple calculator web app built with [React](https://reactjs.org/) and styled 
 
 ## Libraries and Tools
 
-- ES2018 syntax with [BabelJS](https://babeljs.io/)
-- [GatsbyJS](https://rebassjs.org/) powered by [ReactJS](https://reactjs.org/)
+- ES2018 syntax with [BabelJS](https://babeljs.io/).
+- [GatsbyJS](https://rebassjs.org/) powered by [ReactJS](https://reactjs.org/).
 - Styled with [Rebass](https://rebassjs.org/), React primitive UI components built with styled-system
   - using [Emotion](https://emotion.sh/docs/introduction) and [Theme UI](https://theme-ui.com/).
-- ~~[JestJS](https://jestjs.io/) for unit testing~~
-- Code formatting with [Prettier](https://prettier.io/)
-- State management with React [hooks](https://reactjs.org/docs/hooks-intro.html) and [context](https://reactjs.org/docs/context.html)
+- Code formatting with [Prettier](https://prettier.io/).
+- Redux style state management with React [hooks](https://reactjs.org/docs/hooks-intro.html) and [context](https://reactjs.org/docs/context.html).
 
 ## Philosophy
 
 At the beginning some decisions had to be made on the basic functioning of the
-calculator.
+calculator (much of it following this guide [here](https://www.freecodecamp.org/learn/front-end-libraries/front-end-libraries-projects/build-a-javascript-calculator)).
 
-- It should have the 4 basic operations:
+- The app should have 10 clickable elements containing one number each from 0-9.
 
-  - Division <kbd>÷</kbd>
-  - Multiplication <kbd>×</kbd>
-  - Addition <kbd>+</kbd>
-  - Subtraction <kbd>-</kbd>
+- The app should have the 4 basic operations:
 
-- It should use ~~_immediate execution logic_~~ _formula/expression logic_.
+  - division: `÷`,
+  - multiplication: `×`,
+  - addition: `+`,
+  - subtraction: `-`.
 
-  - Immediate Execution Logic:
-    > `3 + 5 × 6 - 2 ÷ 4` **&rarr;** `(((3 + 5) * 6) - 2) / 4` = `11`
+- Additionally, the app should have clickable elements for:
+
+  - entering a decimal: `.`,
+  - clearing the calculator: `C`,
+  - backspacing the input: `↤`,
+  - and executing the expression: `=`.
+
+- The app should use [_formula/expression logic_](https://en.wikipedia.org/wiki/Calculator_input_methods):
+
   - Formula/Expression Logic:
     > `3 + 5 × 6 - 2 ÷ 4` **&rarr;** `3 + (5 * 6) - (2 / 4)` = `32.5`
+  - Immediate Execution Logic:
+    > `3 + 5 × 6 - 2 ÷ 4` **&rarr;** `(((3 + 5) * 6) - 2) / 4` = `11`
 
-- If and operator key is pressed after a value is computed, then the computed
-  value should be continued.
+- Pressing an operator key immediately after an expression is evaluated should start a new expression using the result of the previous evaluation.
   - Example:
-    > _pressing_ <kbd>2</kbd> <kbd>+</kbd> <kbd>3</kbd> <kbd>=</kbd> <kbd>+</kbd> <kbd>4</kbd> <kbd>=</kbd> **&rarr;** `9` _is equivalent to pressing_ <kbd>2</kbd> <kbd>+</kbd> <kbd>3</kbd> <kbd>+</kbd> <kbd>4</kbd> <kbd>=</kbd> **&rarr;** `9`
+    > Pressing: <kbd>2</kbd>, <kbd>+</kbd>, <kbd>3</kbd>, <kbd>=</kbd>, <kbd>+</kbd>, <kbd>4</kbd>, <kbd>=</kbd> returns `9` and is equivalent to pressing: <kbd>2</kbd>, <kbd>+</kbd>, <kbd>3</kbd>, <kbd>+</kbd>, <kbd>4</kbd>, <kbd>=</kbd>.
 
-## Computing Values
+- The app should use the last operator key when consecutive operator keys are pressed.
+  - Example:
+    > Pressing: <kbd>3</kbd>, <kbd>+</kbd>, <kbd>-</kbd>, <kbd>2</kbd>, <kbd>=</kbd> returns `1` and is equivalent to pressing: <kbd>3</kbd>, <kbd>-</kbd>, <kbd>2</kbd>, <kbd>=</kbd>.
+
+## State Management
