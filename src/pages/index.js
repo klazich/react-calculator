@@ -3,6 +3,7 @@ import { Box } from 'rebass'
 
 import '../fonts/fonts.css'
 import Calculator from '../components/Calculator'
+import CalculatorProvider from '../components/CalculatorProvider'
 
 const Container = props => (
   <Box
@@ -18,7 +19,9 @@ const Container = props => (
 const main = () => (
   <Container>
     <Box mx="auto" width={256}>
-      <Calculator />
+      <CalculatorProvider>
+        <Calculator />
+      </CalculatorProvider>
     </Box>
   </Container>
 )

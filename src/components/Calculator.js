@@ -1,16 +1,12 @@
-import React, { useEffect, useReducer, useMemo } from 'react'
+import React, { useEffect, useContext } from 'react'
 
+import { CalculatorContext, action } from './CalculatorProvider'
 import KeyPad from './KeyPad'
 import Display from './Display'
-
-import { is, substituteKey, calculateEquation } from '../helpers'
-import { action } from '../state/actions'
-import { initialState } from '../state/constants'
-import { calculatorReducer } from '../state/reducers'
-import { CalculatorDispatch } from './context'
+import { is, substituteKey } from '../helpers'
 
 function Calculator() {
-  const [state, dispatch] = useReducer(calculatorReducer, initialState)
+  const { dispatch } = useContext(CalculatorContext)
 
   const onKeyDown = event => {
     event.preventDefault()
@@ -28,24 +24,10 @@ function Calculator() {
     }
   })
 
-  // probably unnecessary but with useMemo 'acc' is only recalculated when
-  // state.equation changes and not with every re-render.
-  const calculateAcc = eq => (eq.length < 3 ? 0 : calculateEquation(eq))
-  const acc = useMemo(() => calculateAcc(state.equation), [state.equation])
-  const show = ['OPERATOR', 'EXECUTE', 'USE_EQUATION'].includes(state.last)
-    ? acc
-    : state.digits
-
   return (
     <main>
-      <CalculatorDispatch.Provider value={dispatch}>
-        <Display
-          history={state.history}
-          equation={state.equation}
-          input={show}
-        />
-        <KeyPad />
-      </CalculatorDispatch.Provider>
+      <Display />
+      <KeyPad />
     </main>
   )
 }

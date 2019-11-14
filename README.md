@@ -9,9 +9,10 @@ A simple calculator web app built with [React](https://reactjs.org/) and styled 
 - ES2018 syntax with [BabelJS](https://babeljs.io/)
 - [GatsbyJS](https://rebassjs.org/) powered by [ReactJS](https://reactjs.org/)
 - Styled with [Rebass](https://rebassjs.org/), React primitive UI components built with styled-system
-- [JestJS](https://jestjs.io/) for unit testing
+  - using [Emotion](https://emotion.sh/docs/introduction) and [Theme UI](https://theme-ui.com/).
+- ~~[JestJS](https://jestjs.io/) for unit testing~~
 - Code formatting with [Prettier](https://prettier.io/)
-- A Redux style of state management
+- State management with React [hooks](https://reactjs.org/docs/hooks-intro.html) and [context](https://reactjs.org/docs/context.html)
 
 ## Philosophy
 
@@ -25,17 +26,16 @@ calculator.
   - Addition <kbd>+</kbd>
   - Subtraction <kbd>-</kbd>
 
-- It should use _immediate execution logic_ instead of _formula/expression
-  logic_.
+- It should use ~~_immediate execution logic_~~ _formula/expression logic_.
 
   - Immediate Execution Logic:
-    > `3 + 5 × 6 - 2 ÷ 4` **&rarr;** `(((3 + 5) * 6) - 2) / 4` = 11.5
+    > `3 + 5 × 6 - 2 ÷ 4` **&rarr;** `(((3 + 5) * 6) - 2) / 4` = `11`
   - Formula/Expression Logic:
-    > `3 + 5 × 6 - 2 ÷ 4` **&rarr;** `3 + (5 * 6) - (2 / 4)` = 32.5
+    > `3 + 5 × 6 - 2 ÷ 4` **&rarr;** `3 + (5 * 6) - (2 / 4)` = `32.5`
 
 - If and operator key is pressed after a value is computed, then the computed
   value should be continued.
   - Example:
-    > _pressing_ <kbd>2</kbd> <kbd>+</kbd> <kbd>3</kbd> <kbd>=</kbd> <kbd>+</kbd> <kbd>4</kbd> <kbd>=</kbd> **&rarr;** `9`  _is equivalent to pressing_ <kbd>2</kbd> <kbd>+</kbd> <kbd>3</kbd> <kbd>+</kbd> <kbd>4</kbd> <kbd>=</kbd> **&rarr;** `9`
+    > _pressing_ <kbd>2</kbd> <kbd>+</kbd> <kbd>3</kbd> <kbd>=</kbd> <kbd>+</kbd> <kbd>4</kbd> <kbd>=</kbd> **&rarr;** `9` _is equivalent to pressing_ <kbd>2</kbd> <kbd>+</kbd> <kbd>3</kbd> <kbd>+</kbd> <kbd>4</kbd> <kbd>=</kbd> **&rarr;** `9`
 
 ## Computing Values

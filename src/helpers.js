@@ -41,10 +41,3 @@ export const calculateEquation = ([acc, ...equation]) =>
     (a, c) => (a.length < 2 ? [...a, c] : [doOperation([...a, c])]),
     [acc]
   )[0]
-
-export const logState = reducer => (state, action) => {
-  const newState = reducer(state, action)
-  // eslint-disable-next-line no-undef
-  console.log(newState)
-  return newState
-}

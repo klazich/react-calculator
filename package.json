@@ -9,7 +9,7 @@
     "develop": "gatsby develop",
     "format": "prettier --write \"src/**/*.{js,jsx,json,css,md}\"",
     "format-root": "prettier --write \"./*.{js,jsx,json,css,md}\"",
-    "start": "npm run develop",
+    "start": "yarn develop",
     "serve": "gatsby serve"
   },
   "dependencies": {
@@ -31,9 +31,8 @@
     "babel-preset-gatsby": "^0.2.20",
     "eslint": "^6.5.1",
     "eslint-loader": "^3.0.2",
-    "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-react": "^7.16.0",
-    "esm": "^3.2.20",
+    "eslint-plugin-react-hooks": "^2.2.0",
     "gatsby-plugin-eslint": "^2.0.5",
     "husky": "^3.0.9",
     "lint-staged": "^9.4.2",
@@ -46,7 +45,7 @@
   },
   "lint-staged": {
     "src/**/*.{js,jsx,json,css,md}": [
-      "prettier --write",
+      "yarn format",
       "git add"
     ]
   },
