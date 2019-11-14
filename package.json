@@ -22,11 +22,12 @@
     "gatsby-plugin-emotion": "^4.1.12",
     "gatsby-plugin-theme-ui": "^0.2.43",
     "react": "^16.11.0",
-    "react-dom": "^16.11.0",
+    "react-dom": "npm:@hot-loader/react-dom",
     "rebass": "^4.0.6",
     "theme-ui": "^0.2.44"
   },
   "devDependencies": {
+    "@types/react": "^16.9.11",
     "babel-eslint": "^10.0.3",
     "babel-preset-gatsby": "^0.2.20",
     "eslint": "^6.5.1",
