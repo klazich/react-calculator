@@ -1,13 +1,11 @@
 import React, { useContext } from 'react'
 import PropTypes from 'prop-types'
 
+import { CalculatorContext, type } from '../CalculatorProvider'
 import Screen from './Screen'
 
-import { equation } from '../../state/actions'
-import { CalculatorDispatch } from '../context'
-
 function Row({ children, id }) {
-  const dispatch = useContext(CalculatorDispatch)
+  const { dispatch } = useContext(CalculatorContext)
 
   return (
     <Screen
@@ -25,7 +23,9 @@ function Row({ children, id }) {
       py={1}
       width={1}
       color="DarkGray"
-      onClick={() => dispatch(equation(id))}
+      onClick={() =>
+        dispatch({ type: type.CLICK_EQUATION, payload: { value: id } })
+      }
     >
       {children}
     </Screen>

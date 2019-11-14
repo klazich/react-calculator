@@ -12,7 +12,7 @@ A simple calculator web app built with [React](https://reactjs.org/) and styled 
   - using [Emotion](https://emotion.sh/docs/introduction) and [Theme UI](https://theme-ui.com/).
 - ~~[JestJS](https://jestjs.io/) for unit testing~~
 - Code formatting with [Prettier](https://prettier.io/)
-- A Redux style of state management
+- State management with React [hooks](https://reactjs.org/docs/hooks-intro.html) and [context](https://reactjs.org/docs/context.html)
 
 ## Philosophy
 
@@ -26,8 +26,7 @@ calculator.
   - Addition <kbd>+</kbd>
   - Subtraction <kbd>-</kbd>
 
-- It should use _immediate execution logic_ instead of _formula/expression
-  logic_.
+- It should use ~~_immediate execution logic_~~ _formula/expression logic_.
 
   - Immediate Execution Logic:
     > `3 + 5 × 6 - 2 ÷ 4` **&rarr;** `(((3 + 5) * 6) - 2) / 4` = `11`
