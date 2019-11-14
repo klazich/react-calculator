@@ -28,6 +28,7 @@ export const initialState = {
 const handleNumberInput = ({ value }) => state => {
   const { acc, expression } = state
   const nextAcc = { ...acc, [acc.on]: `${acc[acc.on]}${value}` }
+
   return {
     ...state,
     acc: nextAcc,
@@ -42,6 +43,7 @@ const handleNumberInput = ({ value }) => state => {
 const handleDecimalInput = () => state => {
   const { acc, expression } = state
   const nextAcc = { ...acc, on: 'fraction' }
+
   return {
     ...state,
     acc: nextAcc,
@@ -60,6 +62,7 @@ const handleBackInput = () => state => {
     on: acc.on === 'fraction' && acc.fraction === '' ? 'integer' : acc.on,
     [acc.on]: acc[acc.on].slice(0, -1),
   }
+
   return {
     ...state,
     acc: nextAcc,
@@ -73,6 +76,7 @@ const handleBackInput = () => state => {
 
 const handleOperatorInput = ({ value }) => state => {
   const { expression } = state
+
   return {
     ...state,
     acc: initialState.acc,
@@ -84,20 +88,23 @@ const handleOperatorInput = ({ value }) => state => {
 
 const handleExecuteInput = () => state => {
   const { expression, expHistory } = state
+  const evaluated = evaluateExpression(expression)
+
   return expression.length === 0
     ? state
     : {
         ...state,
         acc: initialState.acc,
-        expression: [evaluateExpression(expression)],
+        expression: [evaluated],
         expHistory: [...expHistory.slice(1), expression],
-        result: evaluateExpression(expression),
+        result: evaluated,
       }
 }
 
 const handleClickEquationInput = ({ value }) => state => {
   const { expHistory } = state
   const nextExpression = getExpressionFromHistory(value, expHistory)
+
   return {
     ...state,
     acc: initialState.acc,

@@ -24,8 +24,8 @@ const evaluateOperation = (operand1, operator, operand2) =>
 export const evaluateExpression = expression => {
   if (expression.length === 0) return 0
   if (expression.length === 1) return expression[0]
-  const highPrecedence = expression.findIndex(v => /[×÷]/.test(v))
-  const lowPrecedence = expression.findIndex(v => /[+-]/.test(v))
+  const highPrecedence = expression.findIndex(v => /^[×÷]$/.test(v))
+  const lowPrecedence = expression.findIndex(v => /^[+-]$/.test(v))
   const id = highPrecedence > 0 ? highPrecedence : lowPrecedence
   return evaluateExpression([
     ...expression.slice(0, id - 1),
