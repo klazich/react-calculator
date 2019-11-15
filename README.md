@@ -2,7 +2,7 @@
 
 # react-calculator
 
-A simple calculator web app built with [React](https://reactjs.org/) and styled using [Rebass](https://rebassjs.org/).
+A simple calculator web app built with [GatsbyJS](https://rebassjs.org/) and [React](https://reactjs.org/) and styled using [Rebass](https://rebassjs.org/).
 
 ## Libraries and Tools
 
@@ -25,7 +25,7 @@ calculator (much of it following this guide [here](https://www.freecodecamp.org/
   - division: `÷`,
   - multiplication: `×`,
   - addition: `+`,
-  - subtraction: `-`.
+  - and subtraction: `-`.
 
 - Additionally, the app should have clickable elements for:
 
@@ -36,17 +36,20 @@ calculator (much of it following this guide [here](https://www.freecodecamp.org/
 
 - The app should use [_formula/expression logic_](https://en.wikipedia.org/wiki/Calculator_input_methods):
 
-  - Formula/Expression Logic:
-    > `3 + 5 × 6 - 2 ÷ 4` **&rarr;** `3 + (5 * 6) - (2 / 4)` = `32.5`
-  - Immediate Execution Logic:
-    > `3 + 5 × 6 - 2 ÷ 4` **&rarr;** `(((3 + 5) * 6) - 2) / 4` = `11`
+  - Formula/Expression Logic: `3 + 5 × 6 - 2 ÷ 4` **&rarr;** `3 + (5 * 6) - (2 / 4)` = `32.5`
+  - Immediate Execution Logic: `3 + 5 × 6 - 2 ÷ 4` **&rarr;** `(((3 + 5) * 6) - 2) / 4` = `11`
 
 - Pressing an operator key immediately after an expression is evaluated should start a new expression using the result of the previous evaluation.
-  - Example:
-    > Pressing: <kbd>2</kbd>, <kbd>+</kbd>, <kbd>3</kbd>, <kbd>=</kbd>, <kbd>+</kbd>, <kbd>4</kbd>, <kbd>=</kbd> returns `9` and is equivalent to pressing: <kbd>2</kbd>, <kbd>+</kbd>, <kbd>3</kbd>, <kbd>+</kbd>, <kbd>4</kbd>, <kbd>=</kbd>.
+
+  - Pressing: <kbd>2</kbd>, <kbd>+</kbd>, <kbd>3</kbd>, <kbd>=</kbd>, <kbd>+</kbd>, <kbd>4</kbd>, <kbd>=</kbd> returns `9` and is equivalent to pressing: <kbd>2</kbd>, <kbd>+</kbd>, <kbd>3</kbd>, <kbd>+</kbd>, <kbd>4</kbd>, <kbd>=</kbd>.
 
 - The app should use the last operator key when consecutive operator keys are pressed.
-  - Example:
-    > Pressing: <kbd>3</kbd>, <kbd>+</kbd>, <kbd>-</kbd>, <kbd>2</kbd>, <kbd>=</kbd> returns `1` and is equivalent to pressing: <kbd>3</kbd>, <kbd>-</kbd>, <kbd>2</kbd>, <kbd>=</kbd>.
+  - Pressing: <kbd>3</kbd>, <kbd>+</kbd>, <kbd>-</kbd>, <kbd>2</kbd>, <kbd>=</kbd> returns `1` and is equivalent to pressing: <kbd>3</kbd>, <kbd>-</kbd>, <kbd>2</kbd>, <kbd>=</kbd>.
+
+### Additional Features
+
+- The app accepts keyboard input as well as the clickable interface.
+
+- The app keeps track of the last 5 evaluated expressions. And, displays them along with the current expression being entered. Clicking a previous expression loads the clicked expression into the current input.
 
 ## State Management
