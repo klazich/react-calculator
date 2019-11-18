@@ -15,8 +15,7 @@ A simple calculator web app built with [GatsbyJS](https://rebassjs.org/) and [Re
 
 ## Philosophy
 
-At the beginning some decisions had to be made on the basic functioning of the
-calculator (much of it following this guide [here](https://www.freecodecamp.org/learn/front-end-libraries/front-end-libraries-projects/build-a-javascript-calculator)).
+At the beginning some decisions had to be made on the basic functioning of the calculator (much of it following this guide [here](https://www.freecodecamp.org/learn/front-end-libraries/front-end-libraries-projects/build-a-javascript-calculator)).
 
 - The app should have 10 clickable elements containing one number each from 0-9.
 
@@ -48,7 +47,7 @@ calculator (much of it following this guide [here](https://www.freecodecamp.org/
 
 ### Additional Features
 
-- The app accepts keyboard input as well as the clickable interface.
+- The app accepts keyboard input as well as the clickable user interface.
 
 - The app keeps track of the last 5 evaluated expressions. And, displays them along with the current expression being entered. Clicking a previous expression loads the clicked expression into the current input.
 
