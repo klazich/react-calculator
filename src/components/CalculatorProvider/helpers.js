@@ -3,10 +3,10 @@ import { type } from './reducer'
 export const accToValue = ({ integer, fraction }) =>
   Number(`${integer || 0}.${fraction}`)
 
-export const accToString = ({ on, integer, fraction }) => {
-  if (on === 'fraction') return `${Number(integer || 0)}.${fraction || 0}`
-  else return `${Number(integer || 0)}`
-}
+export const accToString = ({ on, integer, fraction }) =>
+  on === 'fraction'
+    ? `${Number(integer || 0)}.${fraction || 0}`
+    : `${Number(integer || 0)}`
 
 const opsFunction = op =>
   ({
