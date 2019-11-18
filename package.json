@@ -10,7 +10,8 @@
     "format": "prettier --write \"src/**/*.{js,jsx,json,css,md}\"",
     "format-root": "prettier --write \"./*.{js,jsx,json,css,md}\"",
     "start": "yarn develop",
-    "serve": "gatsby serve"
+    "serve": "gatsby serve",
+    "postversion": "git push --tags"
   },
   "dependencies": {
     "@emotion/core": "^10.0.22",
@@ -42,7 +43,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/gatsbyjs/gatsby-starter-hello-world"
+    "url": "https://github.com/klazich/react-calculator"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,json,css,md}": [
