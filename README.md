@@ -54,3 +54,7 @@ At the beginning some decisions had to be made on the basic functioning of the c
 - The app keeps track of the last 5 evaluated expressions. And, displays them along with the current expression being entered. Clicking a previous expression loads the clicked expression into the current input.
 
 ## State Management
+
+The calculator state is managed with a [`useReducer`](https://reactjs.org/docs/hooks-reference.html#usereducer) hook wrapped in a [context provider](https://reactjs.org/docs/context.html#contextprovider) ([file](src/components/CalculatorProvider/index.js)). The calculator provider wraps the calculator component in the [pages](src/pages/index.js) directory. The context object is imported to components of calculator that effect state. And, consumed with a [`useContext`](https://reactjs.org/docs/hooks-reference.html#usecontext) hook.
+
+### [Reducer](src/components/CalculatorProvider/reducer.js)
