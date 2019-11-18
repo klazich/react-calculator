@@ -1,13 +1,17 @@
 import React, { useContext } from 'react'
 import { Box, Card } from 'rebass'
 
-import { CalculatorContext } from '../CalculatorProvider'
+import { CalculatorContext, accToString } from '../CalculatorProvider'
 import InputScreen from './InputScreen'
-import EquationScreen from './EquationScreen'
+import ExpressionScreen from './ExpressionScreen'
 import HistoryScreen from './HistoryScreen'
 
 const Display = () => {
-  const { state, display } = useContext(CalculatorContext)
+  const { state } = useContext(CalculatorContext)
+  const { acc, expression, result } = state
+
+  const showValue = result || accToString(acc)
+
   return (
     <Box p={0}>
       <Card>
@@ -18,8 +22,8 @@ const Display = () => {
           my: 2,
         }}
       >
-        <EquationScreen>{state.expression}</EquationScreen>
-        <InputScreen>{display}</InputScreen>
+        <ExpressionScreen>{expression}</ExpressionScreen>
+        <InputScreen>{showValue}</InputScreen>
       </Card>
     </Box>
   )
