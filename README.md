@@ -17,26 +17,28 @@ A simple calculator web app built with [GatsbyJS](https://rebassjs.org/) and [Re
 
 At the beginning some decisions had to be made on the basic functioning of the calculator (much of it following this guide [here](https://www.freecodecamp.org/learn/front-end-libraries/front-end-libraries-projects/build-a-javascript-calculator)).
 
-- The app should have 10 clickable elements containing one number each from 0-9.
+- The app should have 10 clickable elements containing one number each: `0`-`9`.
 
 - The app should have the 4 basic operations:
 
   - division: `÷`,
   - multiplication: `×`,
   - addition: `+`,
-  - and subtraction: `-`.
+  - and, subtraction: `-`.
 
 - Additionally, the app should have clickable elements for:
 
   - entering a decimal: `.`,
   - clearing the calculator: `C`,
   - backspacing the input: `↤`,
-  - and executing the expression: `=`.
+  - and, executing the expression: `=`.
 
-- The app should use [_formula/expression logic_](https://en.wikipedia.org/wiki/Calculator_input_methods):
+- The app should use [formula/expression logic](https://en.wikipedia.org/wiki/Calculator_input_methods):
 
-  - Formula/Expression Logic: `3 + 5 × 6 - 2 ÷ 4` **&rarr;** `3 + (5 * 6) - (2 / 4)` = `32.5`
-  - Immediate Execution Logic: `3 + 5 × 6 - 2 ÷ 4` **&rarr;** `(((3 + 5) * 6) - 2) / 4` = `11`
+  - Given an expression (`3 + 5 × 6 - 2 ÷ 4`) it can be evaluated with:
+    - Formula/Expression Logic: `3 + (5 * 6) - (2 / 4)` returns `32.5`,
+    - or, Immediate Execution Logic: `(((3 + 5) * 6) - 2) / 4` returns `11`.
+  - Formula/Expression Logic evaluates the entire expression using precedence while Immediate Execution Logic applies the result of the first operation to the next.
 
 - Pressing an operator key immediately after an expression is evaluated should start a new expression using the result of the previous evaluation.
 
