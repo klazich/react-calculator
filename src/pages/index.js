@@ -10,7 +10,7 @@ const Container = props => (
     {...props}
     mx="auto"
     py={4}
-    css={{
+    sx={{
       maxWidth: '1024px',
     }}
   />

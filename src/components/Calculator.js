@@ -4,31 +4,32 @@ import { CalculatorContext, action } from './CalculatorProvider'
 import KeyPad from './KeyPad'
 import Display from './Display'
 
+const subValue = {
+  '/': '÷',
+  '*': '×',
+  Escape: 'C',
+  Backspace: '↤',
+  Enter: '=',
+}
+
 function Calculator() {
   const { dispatch } = useContext(CalculatorContext)
 
-  const onKeyDown = event => {
+  const handleKeyDown = event => {
     event.preventDefault()
-    const value =
-      {
-        '/': '÷',
-        '*': '×',
-        Escape: 'C',
-        Backspace: '↤',
-        Enter: '=',
-      }[event.key] || event.key
+    const value = subValue[event.key] || event.key
     if (/^[0-9C↤.=÷×+-]$/.test(`${value}`)) dispatch(action(value))
   }
 
   // useEffect hook to capture `keydown` events
   useEffect(() => {
     // eslint-disable-next-line no-undef
-    document.addEventListener('keydown', onKeyDown, false)
+    document.addEventListener('keydown', handleKeyDown, false)
     return () => {
       // eslint-disable-next-line no-undef
-      document.removeEventListener('keydown', onKeyDown, false)
+      document.removeEventListener('keydown', handleKeyDown, false)
     }
-  })
+  }, [])
 
   return (
     <main>
