@@ -10,8 +10,7 @@
     "format": "prettier --write \"src/**/*.{js,jsx,json,css,md}\"",
     "format-root": "prettier --write \"./*.{js,jsx,json,css,md}\"",
     "start": "yarn develop",
-    "serve": "gatsby serve",
-    "postversion": "git push --tags"
+    "serve": "gatsby serve"
   },
   "dependencies": {
     "@emotion/core": "^10.0.22",
