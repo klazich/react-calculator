@@ -1,10 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import Screen from './Screen'
+import Item from '../Item'
 
-const ExpressionScreen = ({ children }) => (
-  <Screen
+const ExpressionDisplay = ({ children }) => (
+  <Item
     sx={{
       height: '22px',
       overflow: 'hidden',
@@ -15,13 +15,13 @@ const ExpressionScreen = ({ children }) => (
     color="Silver"
   >
     {children.join(' ')}
-  </Screen>
+  </Item>
 )
 
-ExpressionScreen.propTypes = {
+ExpressionDisplay.propTypes = {
   children: PropTypes.arrayOf(
     PropTypes.oneOfType([PropTypes.number, PropTypes.string])
   ).isRequired,
 }
 
-export default ExpressionScreen
+export default ExpressionDisplay
