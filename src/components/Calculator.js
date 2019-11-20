@@ -19,7 +19,7 @@ function Calculator() {
   useEffect(() => {
     const handleKeyDown = event => {
       event.preventDefault()
-      // substitute keydown event key with value used in reducer.
+      // substitute keydown event key with value used in reducer
       const value = subValue[event.key] || event.key
       if (/^[0-9C↤.=÷×+-]$/.test(`${value}`)) dispatch(action(value))
     }

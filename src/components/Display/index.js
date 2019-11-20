@@ -9,11 +9,7 @@ const Display = () => (
     <Card>
       <ExpHistoryDisplay />
     </Card>
-    <Card
-      sx={{
-        my: 2,
-      }}
-    >
+    <Card my={2}>
       <InputDisplay />
     </Card>
   </Box>
