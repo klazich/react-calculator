@@ -2,6 +2,8 @@
 
 # react-calculator
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/e19aaf4b-aa28-45b8-a7ff-05f44c7b11d4/deploy-status)](https://app.netlify.com/sites/dreamy-euclid-db3744/deploys)
+
 A simple calculator web app built with [React](https://reactjs.org/) and styled using [Rebass](https://rebassjs.org/).
 
 ## Libraries and Tools
