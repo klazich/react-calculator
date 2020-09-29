@@ -13,7 +13,7 @@
     "serve": "gatsby serve"
   },
   "dependencies": {
-    "@emotion/core": "^10.0.22",
+    "@emotion/core": "^10.0.35",
     "@emotion/styled": "^10.0.22",
     "@mdx-js/react": "^1.5.1",
     "@rebass/preset": "^4.0.5",
