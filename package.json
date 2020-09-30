@@ -45,8 +45,7 @@
   },
   "lint-staged": {
     "src/**/*.{js,jsx,json,css,md}": [
-      "npm run format",
-      "git add"
+      "npm run format"
     ]
   },
   "husky": {
