@@ -4,7 +4,7 @@ import { Flex, Card } from 'rebass'
 import Key from './Key'
 import { keys } from '../../helpers'
 
-const isWideKey = k => ['=', '↤'].includes(k)
+const isWideKey = (k) => ['=', '↤'].includes(k)
 
 const KeyPad = () => (
   <Card variant="keyPad">

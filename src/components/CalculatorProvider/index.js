@@ -9,7 +9,7 @@ export { action } from './helpers'
 
 export const CalculatorContext = createContext()
 
-export const CalculatorProvider = props => {
+export const CalculatorProvider = (props) => {
   const [state, dispatch] = useReducer(calculatorReducer, initialState)
   const { acc, result } = state
 

@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Text } from 'rebass'
 
-const Screen = props => (
+const Screen = (props) => (
   <Text
     sx={{
       whiteSpace: 'nowrap',

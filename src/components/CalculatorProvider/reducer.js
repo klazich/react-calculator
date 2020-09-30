@@ -25,7 +25,7 @@ export const initialState = {
   result: null,
 }
 
-const handleNumberInput = ({ value }) => state => {
+const handleNumberInput = ({ value }) => (state) => {
   const { acc, expression } = state
   const nextAcc = { ...acc, [acc.on]: `${acc[acc.on]}${value}` }
 
@@ -40,7 +40,7 @@ const handleNumberInput = ({ value }) => state => {
   }
 }
 
-const handleDecimalInput = () => state => {
+const handleDecimalInput = () => (state) => {
   const { acc, expression } = state
   const nextAcc = { ...acc, on: 'fraction' }
 
@@ -55,7 +55,7 @@ const handleDecimalInput = () => state => {
   }
 }
 
-const handleBackInput = () => state => {
+const handleBackInput = () => (state) => {
   const { acc, expression } = state
   const nextAcc = {
     ...acc,
@@ -74,7 +74,7 @@ const handleBackInput = () => state => {
   }
 }
 
-const handleOperatorInput = ({ value }) => state => {
+const handleOperatorInput = ({ value }) => (state) => {
   const { expression } = state
 
   return {
@@ -86,7 +86,7 @@ const handleOperatorInput = ({ value }) => state => {
   }
 }
 
-const handleExecuteInput = () => state => {
+const handleExecuteInput = () => (state) => {
   const { expression, expHistory } = state
   const evaluated = evaluateExpression(expression)
 
@@ -101,7 +101,7 @@ const handleExecuteInput = () => state => {
       }
 }
 
-const handleClickEquationInput = ({ value }) => state => {
+const handleClickEquationInput = ({ value }) => (state) => {
   const { expHistory } = state
   const nextExpression = getExpressionFromHistory(value, expHistory)
 
@@ -134,7 +134,7 @@ const reducer = (state, action) => {
   }
 }
 
-const logState = reducer => (state, action) => {
+const logState = (reducer) => (state, action) => {
   const nextState = reducer(state, action)
   // eslint-disable-next-line no-undef
   console.log(action.type)

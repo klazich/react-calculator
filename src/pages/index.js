@@ -5,7 +5,7 @@ import '../fonts/fonts.css'
 import Calculator from '../components/Calculator'
 import CalculatorProvider from '../components/CalculatorProvider'
 
-const Container = props => (
+const Container = (props) => (
   <Box
     {...props}
     mx="auto"

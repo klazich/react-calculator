@@ -8,7 +8,7 @@ import { is, substituteKey } from '../helpers'
 function Calculator() {
   const { dispatch } = useContext(CalculatorContext)
 
-  const onKeyDown = event => {
+  const onKeyDown = (event) => {
     event.preventDefault()
     const key = substituteKey(event.key)
     if (is.key(key)) dispatch(action(key))
