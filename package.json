@@ -31,7 +31,7 @@
     "babel-preset-gatsby": "^0.5.13",
     "eslint": "^7.11.0",
     "eslint-loader": "^4.0.2",
-    "eslint-plugin-react": "^7.21.3",
+    "eslint-plugin-react": "^7.21.4",
     "eslint-plugin-react-hooks": "^4.1.2",
     "gatsby-plugin-eslint": "^2.0.8",
     "husky": "^4.3.0",
