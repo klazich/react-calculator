@@ -9,6 +9,7 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "weekly"
+    target-branch: "dep-updates"
     labels:
       - "npm dependencies"
     # Raise all npm pull requests with an assignee
