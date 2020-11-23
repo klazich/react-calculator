@@ -24,7 +24,7 @@
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "rebass": "^4.0.7",
-    "theme-ui": "^0.3.3"
+    "theme-ui": "^0.3.4"
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
