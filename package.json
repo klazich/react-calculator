@@ -28,13 +28,13 @@
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
-    "babel-preset-gatsby": "^0.12.1",
-    "eslint": "^7.20.0",
+    "babel-preset-gatsby": "^1.0.0",
+    "eslint": "^7.21.0",
     "eslint-loader": "^4.0.2",
     "eslint-plugin-react": "^7.22.0",
     "eslint-plugin-react-hooks": "^4.2.0",
     "gatsby-plugin-eslint": "^2.0.8",
-    "husky": "^5.1.1",
+    "husky": "^5.1.2",
     "lint-staged": "^10.5.4",
     "prettier": "^2.2.1",
     "prop-types": "^15.7.2"
