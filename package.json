@@ -28,7 +28,7 @@
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
-    "babel-preset-gatsby": "^1.7.1",
+    "babel-preset-gatsby": "^1.8.0",
     "eslint": "^7.29.0",
     "eslint-loader": "^4.0.2",
     "eslint-plugin-react": "^7.24.0",
@@ -36,7 +36,7 @@
     "gatsby-plugin-eslint": "^2.0.8",
     "husky": "^6.0.0",
     "lint-staged": "^11.0.0",
-    "prettier": "^2.3.1",
+    "prettier": "^2.3.2",
     "prop-types": "^15.7.2"
   },
   "repository": {
